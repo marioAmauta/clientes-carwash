@@ -1,0 +1,69 @@
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  id               String     @id @default(auto()) @map("_id") @db.ObjectId
+  username         String     @unique
+  email            String     @unique
+  hashedPassword   String
+  role             String     @default("user")
+  createdAt        DateTime   @default(now())
+  updatedAt        DateTime   @updatedAt
+  sessions         Session[]
+  createdCustomers Customer[]
+  createdTips      Tip[]
+
+  @@map("users")
+}
+
+model Session {
+  id        String   @id @map("_id")
+  user      User     @relation(references: [id], fields: [userId], onDelete: Cascade)
+  userId    String   @db.ObjectId
+  expiresAt DateTime
+
+  @@map("sessions")
+}
+
+model InvitationCode {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  code      String   @unique
+  isUsed    Boolean  @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("invitationCodes")
+}
+
+model Customer {
+  id                  String   @id @default(auto()) @map("_id") @db.ObjectId
+  carPlate            String   @unique
+  customerDescription String?
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
+  tips                Tip[]
+  createdBy           User?    @relation(fields: [createdById], references: [id], onDelete: SetNull)
+  createdById         String?  @db.ObjectId
+
+  @@map("customers")
+}
+
+model Tip {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  tip         Int
+  tipComment  String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  customer    Customer @relation(references: [id], fields: [customerId], onDelete: Cascade)
+  customerId  String   @db.ObjectId
+  user        User?    @relation(fields: [createdById], references: [id], onDelete: SetNull)
+  createdById String?  @db.ObjectId
+
+  @@map("tips")
+}
