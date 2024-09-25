@@ -71,7 +71,7 @@ export function FormTip({ customerId }: FormTipProps) {
                 name="tipComment"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Comentario</FormLabel>
+                    <FormLabel>Comentario de la propina</FormLabel>
                     <FormControl>
                       <Textarea
                         placeholder="Ingresa un comentario para la propina"
