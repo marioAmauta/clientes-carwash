@@ -2,7 +2,8 @@ import { Plus, QrCode } from "lucide-react";
 import Link from "next/link";
 
 import { TEST_IDS, APP_LINKS, SITE_TITLE } from "@/lib/constants";
-import { sessionUtility } from "@/lib/session";
+import { Roles } from "@/lib/definitions";
+import { validateRequest } from "@/lib/session";
 import { cn } from "@/lib/utils";
 
 import { buttonVariants } from "@/components/ui/button";
@@ -12,7 +13,7 @@ import { ButtonSearch } from "./button-search";
 import { HeaderHider } from "./header-hider";
 
 export async function Header() {
-  const { user, isAdmin } = await sessionUtility();
+  const { user } = await validateRequest();
 
   return (
     <HeaderHider className="sticky top-0 z-50 w-full bg-primary backdrop-blur-md transition-all">
@@ -32,7 +33,7 @@ export async function Header() {
         {user ? (
           <nav className="flex items-center justify-between gap-3 md:gap-8">
             <>
-              {isAdmin ? (
+              {user.role === Roles.Admin ? (
                 <Link
                   href={APP_LINKS.CREATE_INVITATION_CODE_PAGE}
                   data-testid={TEST_IDS.createInvitationLink}

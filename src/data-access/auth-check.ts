@@ -4,7 +4,8 @@ import { redirect } from "next/navigation";
 import { cache } from "react";
 
 import { APP_LINKS } from "@/lib/constants";
-import { sessionUtility } from "@/lib/session";
+import { Roles } from "@/lib/definitions";
+import { validateRequest } from "@/lib/session";
 
 type VerifyUserLoggedInOptions = {
   checkIfIsAdmin?: boolean;
@@ -14,13 +15,13 @@ type VerifyUserLoggedInOptions = {
 
 export const verifyUserLoggedIn = cache(
   async ({ checkIfIsAdmin, checkIfIsTheSameUser, username }: VerifyUserLoggedInOptions = {}) => {
-    const { user, isAdmin } = await sessionUtility();
+    const { user, session } = await validateRequest();
 
-    if (!user) {
+    if (!user || !session) {
       return redirect(APP_LINKS.LOGIN_PAGE);
     }
 
-    if ((checkIfIsAdmin && !isAdmin) || (checkIfIsTheSameUser && user.username !== username)) {
+    if ((checkIfIsAdmin && user.role !== Roles.Admin) || (checkIfIsTheSameUser && user.username !== username)) {
       return redirect(APP_LINKS.HOME_PAGE);
     }
 
@@ -29,7 +30,7 @@ export const verifyUserLoggedIn = cache(
 );
 
 export const verifyUserLoggedOut = cache(async () => {
-  const { user } = await sessionUtility();
+  const { user } = await validateRequest();
 
   if (user) {
     return redirect(APP_LINKS.HOME_PAGE);
