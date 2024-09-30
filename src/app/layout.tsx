@@ -25,7 +25,7 @@ export default function RootLayout({ children }: PropsWithChildren) {
     <html lang="es">
       <body className="grid min-h-screen-dynamic grid-rows-pancake-stack">
         <Header />
-        <main className="container mx-auto space-y-8 p-4 pb-12 pt-8 lg:space-y-12 lg:py-8">{children}</main>
+        <main className="container mx-auto space-y-8 p-4 pb-12 lg:space-y-12 lg:py-8">{children}</main>
         <ButtonBackToTop />
         <Toaster richColors closeButton position="top-center" />
       </body>
