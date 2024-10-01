@@ -1,14 +1,12 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useRouter } from "next/navigation";
-import { useTransition } from "react";
+import { useEffect, useTransition } from "react";
 import { useForm } from "react-hook-form";
-import { toast } from "sonner";
 
 import { TEST_IDS } from "@/lib/constants";
-import { CustomerSchemaType } from "@/lib/definitions";
-import { customerSchema } from "@/lib/schemas";
+import { NewCustomerSchemaType } from "@/lib/definitions";
+import { newCustomerSchema } from "@/lib/schemas";
 
 import { FormButtonContainer } from "@/components/form-button-container";
 import { FormButtonLoading } from "@/components/form-button-loading";
@@ -17,32 +15,39 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 
-import { editCustomerAction } from "./actions";
+import { createCustomerAction } from "./actions";
 
-export function FormCustomerEdit({ carPlate, customerDescription }: CustomerSchemaType) {
+type CustomerFormProps = {
+  carPlateFromSearch?: string;
+  customer?: NewCustomerSchemaType;
+};
+
+export function FormCustomerCreate({ carPlateFromSearch, customer }: CustomerFormProps) {
   const [isPending, startTransition] = useTransition();
-  const { back, refresh } = useRouter();
 
-  const form = useForm<CustomerSchemaType>({
-    resolver: zodResolver(customerSchema),
+  const form = useForm<NewCustomerSchemaType>({
+    resolver: zodResolver(newCustomerSchema),
     defaultValues: {
-      carPlate: carPlate ?? "",
-      customerDescription: customerDescription ?? ""
+      carPlate: customer?.carPlate ?? carPlateFromSearch ?? "",
+      customerDescription: customer?.customerDescription ?? "",
+      tip: customer?.tip ?? "",
+      tipComment: customer?.tipComment ?? ""
     }
   });
 
-  async function onSubmit(data: CustomerSchemaType) {
+  async function onSubmit(data: NewCustomerSchemaType) {
     startTransition(async () => {
-      const response = await editCustomerAction({ data, carPlate });
-
-      if (response && !response.success) {
-        toast.error(response.message);
-      } else {
-        back();
-        refresh();
-      }
+      await createCustomerAction({ data });
     });
   }
+
+  useEffect(() => {
+    if (form.watch("carPlate")) {
+      form.setFocus("customerDescription");
+    } else {
+      form.setFocus("carPlate");
+    }
+  }, [form]);
 
   return (
     <Form {...form}>
@@ -83,10 +88,47 @@ export function FormCustomerEdit({ carPlate, customerDescription }: CustomerSche
               </FormItem>
             )}
           />
+          <FormField
+            control={form.control}
+            name="tip"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Propina</FormLabel>
+                <FormControl>
+                  <Input
+                    type="number"
+                    min={0}
+                    placeholder="Ingresa la propina"
+                    data-testid={TEST_IDS.customerForm.tip}
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="tipComment"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Comentario de la propina (opcional)</FormLabel>
+                <FormControl>
+                  <Textarea
+                    placeholder="Ingresa un comentario para la propina"
+                    data-testid={TEST_IDS.customerForm.comment}
+                    className="resize-none"
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
         </FormCard>
         <FormButtonContainer withCancelButton>
           <FormButtonLoading type="submit" loading={isPending} data-testid={TEST_IDS.customerForm.submitButton}>
-            Actualizar
+            Crear Cliente
           </FormButtonLoading>
         </FormButtonContainer>
       </form>

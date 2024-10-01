@@ -7,9 +7,8 @@ import { getTipById } from "@/data-access/tip";
 import { APP_LINKS } from "@/lib/constants";
 import { NextPageProps } from "@/lib/definitions";
 
+import { FormTip } from "@/components/form-tip";
 import { TypographyH1, TypographyH2 } from "@/components/ui/typography";
-
-import { FormTipEdit } from "./form-tip-edit";
 
 const title = "Editar Propina";
 
@@ -36,7 +35,7 @@ export default async function EditTipPage({
     <>
       <TypographyH1>{title}</TypographyH1>
       <TypographyH2 className="mx-auto w-max">{`"${carPlate}"`}</TypographyH2>
-      <FormTipEdit id={id} tip={String(tip)} tipComment={tipComment ?? undefined} />
+      <FormTip tipId={id} tip={String(tip)} tipComment={tipComment ?? undefined} />
     </>
   );
 }

@@ -1,12 +1,13 @@
 import { Metadata } from "next";
+import React from "react";
 
 import { verifyUserLoggedIn } from "@/data-access/auth-check";
 
 import { NextPageProps } from "@/lib/definitions";
 
-import { FormCustomer } from "@/app/(user)/crear-cliente/form-customer";
-
 import { TypographyH1 } from "@/components/ui/typography";
+
+import { FormCustomerCreate } from "./form-customer-create";
 
 const title = "Crear Cliente";
 
@@ -22,7 +23,7 @@ export default async function CreateCustomerPage({
   return (
     <>
       <TypographyH1>{title}</TypographyH1>
-      <FormCustomer carPlateFromSearch={carPlate} />
+      <FormCustomerCreate carPlateFromSearch={carPlate} />
     </>
   );
 }

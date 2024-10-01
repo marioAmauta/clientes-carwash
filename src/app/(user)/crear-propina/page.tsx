@@ -7,9 +7,8 @@ import { getCustomerIdByCarPlate } from "@/data-access/customer";
 import { APP_LINKS } from "@/lib/constants";
 import { NextPageProps } from "@/lib/definitions";
 
+import { FormTip } from "@/components/form-tip";
 import { TypographyH1, TypographyH2 } from "@/components/ui/typography";
-
-import { FormTip } from "./form-tip";
 
 const title = "Agregar Propina";
 

@@ -10,7 +10,9 @@ import { TEST_IDS } from "@/lib/constants";
 import { LoginSchemaType } from "@/lib/definitions";
 import { loginSchema } from "@/lib/schemas";
 
+import { FormButtonContainer } from "@/components/form-button-container";
 import { FormButtonLoading } from "@/components/form-button-loading";
+import { FormCard } from "@/components/form-card";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input, InputPassword } from "@/components/ui/input";
 
@@ -41,43 +43,45 @@ export function FormLogin() {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="mx-auto max-w-lg space-y-4">
-        <FormField
-          control={form.control}
-          name="email"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Email</FormLabel>
-              <FormControl>
-                <Input
-                  type="email"
-                  placeholder="Ingresa tu correo electrónico"
-                  data-testid={TEST_IDS.loginForm.email}
-                  {...field}
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="password"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Contraseña</FormLabel>
-              <FormControl>
-                <InputPassword
-                  placeholder="Ingresa tu contraseña"
-                  data-testid={TEST_IDS.loginForm.password}
-                  {...field}
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <div className="pt-4">
+      <form onSubmit={form.handleSubmit(onSubmit)}>
+        <FormCard>
+          <FormField
+            control={form.control}
+            name="email"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Email</FormLabel>
+                <FormControl>
+                  <Input
+                    type="email"
+                    placeholder="Ingresa tu correo electrónico"
+                    data-testid={TEST_IDS.loginForm.email}
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="password"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Contraseña</FormLabel>
+                <FormControl>
+                  <InputPassword
+                    placeholder="Ingresa tu contraseña"
+                    data-testid={TEST_IDS.loginForm.password}
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        </FormCard>
+        <FormButtonContainer>
           <FormButtonLoading
             type="submit"
             className="w-full"
@@ -86,7 +90,7 @@ export function FormLogin() {
           >
             Iniciar sesión
           </FormButtonLoading>
-        </div>
+        </FormButtonContainer>
       </form>
     </Form>
   );
