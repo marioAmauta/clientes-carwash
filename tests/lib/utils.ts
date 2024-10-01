@@ -130,21 +130,18 @@ async function createNewCustomer({
   customerDescription,
   tip,
   tipComment,
-  optionalToggle,
   submitButton
 }: NewCustomerData) {
   await page.getByTestId(carPlate.testId).fill(carPlate.value);
+
+  if (customerDescription) {
+    await page.getByTestId(customerDescription.testId).fill(customerDescription.value);
+  }
+
   await page.getByTestId(tip.testId).fill(tip.value);
 
-  if (optionalToggle) {
-    await page.getByTestId(optionalToggle.testId).click();
-
-    if (customerDescription) {
-      await page.getByTestId(customerDescription.testId).fill(customerDescription.value);
-    }
-    if (tipComment) {
-      await page.getByTestId(tipComment.testId).fill(tipComment.value);
-    }
+  if (tipComment) {
+    await page.getByTestId(tipComment.testId).fill(tipComment.value);
   }
 
   await page.getByTestId(submitButton.testId).click();
@@ -168,9 +165,6 @@ export async function userCreateNewCustomerAction({ page, newCustomer }: UserCre
     tipComment: {
       testId: TEST_IDS.customerForm.comment,
       value: newCustomer.tipComment ?? ""
-    },
-    optionalToggle: {
-      testId: TEST_IDS.customerForm.optionalFieldsToggle
     },
     submitButton: {
       testId: TEST_IDS.customerForm.submitButton

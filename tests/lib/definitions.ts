@@ -60,7 +60,6 @@ export type NewCustomerData = PlaywrightPage & {
   customerDescription?: TestIdAndValue;
   tip: TestIdAndValue;
   tipComment?: TestIdAndValue;
-  optionalToggle?: TestId;
   submitButton: TestId;
 };
 
