@@ -9,9 +9,9 @@ import { TEST_IDS } from "@/lib/constants";
 import { NewInvitationCodeSchemaType } from "@/lib/definitions";
 import { newInvitationCodeSchema } from "@/lib/schemas";
 
-import { FormButtonCancel } from "@/components/form-button-cancel";
 import { FormButtonContainer } from "@/components/form-button-container";
 import { FormButtonLoading } from "@/components/form-button-loading";
+import { FormCard } from "@/components/form-card";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 
@@ -39,26 +39,27 @@ export function FormInvitationCode() {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="mx-auto max-w-lg space-y-4">
-        <FormField
-          control={form.control}
-          name="invitationCode"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Código de Invitación</FormLabel>
-              <FormControl>
-                <Input
-                  placeholder="Ingresa el código de invitación"
-                  data-testid={TEST_IDS.formInvitationCode.invitationCode}
-                  {...field}
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormButtonContainer>
-          <FormButtonCancel />
+      <form onSubmit={form.handleSubmit(onSubmit)}>
+        <FormCard>
+          <FormField
+            control={form.control}
+            name="invitationCode"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Código de Invitación</FormLabel>
+                <FormControl>
+                  <Input
+                    placeholder="Ingresa el código de invitación"
+                    data-testid={TEST_IDS.formInvitationCode.invitationCode}
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        </FormCard>
+        <FormButtonContainer withCancelButton>
           <FormButtonLoading type="submit" loading={isPending} data-testid={TEST_IDS.formInvitationCode.submitButton}>
             Crear Código
           </FormButtonLoading>
