@@ -28,9 +28,8 @@ export default async function CustomerDetailPage({
   if (!foundCustomer) {
     return (
       <>
-        <TypographyH1>Buscar Cliente</TypographyH1>
+        <TypographyH1>Patente no encontrada</TypographyH1>
         <TypographyH2 className="mx-auto w-fit break-all">{`"${carPlate}"`}</TypographyH2>
-        <TypographyLead className="text-center">Patente no encontrada</TypographyLead>
         <div className="mx-auto w-fit">
           <LinkButtonCreate
             href={`${APP_LINKS.NEW_CUSTOMER_PAGE}?${new URLSearchParams({ carPlate })}`}
