@@ -22,7 +22,7 @@ export const ERROR_MESSAGES = Object.freeze({
   ALREADY_CREATED_CUSTOMER: "Cliente con esta patente ya existe",
   ALREADY_USED_CAR_PLATE: "La patente ya está en uso, por favor elige otra",
   INVALID_CAR_PLATE: {
-    MIN: "La patente debe tener al menos 6 caracteres",
+    MIN: "La patente debe tener al menos 5 caracteres en caso de motos y 6 en caso de autos",
     MAX: "La patente no puede tener más de 6 caracteres"
   },
   INVALID_TIP: "La propina no puede estar vacía",
@@ -65,14 +65,12 @@ export const TEST_IDS = Object.freeze({
     description: "description",
     tip: "tip",
     comment: "comment",
-    optionalFieldsToggle: "optionalFieldsToggle",
     submitButton: "submit",
     cancelButton: "cancel"
   },
   tipForm: {
     tip: "tip",
     comment: "comment",
-    commentToggleButton: "commentToggleButton",
     submitButton: "submitTip"
   },
   formInvitationCode: {
