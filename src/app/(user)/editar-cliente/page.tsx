@@ -7,7 +7,7 @@ import { getCustomerWithLastTipByCarPlate } from "@/data-access/customer";
 import { APP_LINKS } from "@/lib/constants";
 import { NextPageProps } from "@/lib/definitions";
 
-import { TypographyH1, TypographyH2 } from "@/components/ui/typography";
+import { TypographyH2 } from "@/components/ui/typography";
 
 import { FormCustomerEdit } from "./form-customer-edit";
 
@@ -30,8 +30,7 @@ export default async function EditCustomerPage({
 
   return (
     <>
-      <TypographyH1>{title}</TypographyH1>
-      <TypographyH2 className="mx-auto w-max">{`"${carPlate}"`}</TypographyH2>
+      <TypographyH2 className="text-center">{title}</TypographyH2>
       <FormCustomerEdit
         carPlate={foundCustomer.carPlate}
         customerDescription={foundCustomer.customerDescription ?? undefined}

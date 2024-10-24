@@ -169,7 +169,8 @@ export const getCustomerIdByCarPlate = cache(async ({ carPlate }: Pick<Customer,
       carPlate
     },
     select: {
-      id: true
+      id: true,
+      customerDescription: true
     }
   });
 });

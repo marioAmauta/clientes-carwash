@@ -68,7 +68,12 @@ export const getTipById = cache(async ({ id }: Pick<Tip, "id">) => {
     select: {
       id: true,
       tip: true,
-      tipComment: true
+      tipComment: true,
+      customer: {
+        select: {
+          customerDescription: true
+        }
+      }
     }
   });
 });

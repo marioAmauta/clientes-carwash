@@ -1,7 +1,7 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useEffect, useTransition } from "react";
+import { useTransition } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 
@@ -17,7 +17,6 @@ import { FormButtonLoading } from "@/components/form-button-loading";
 import { FormCard } from "@/components/form-card";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
 
 type FormTipProps = Partial<{ customerId: string; tipId: string } & TipSchemaType>;
 
@@ -50,14 +49,28 @@ export function FormTip({ customerId, tipId, tip, tipComment }: FormTipProps) {
     });
   }
 
-  useEffect(() => {
-    form.setFocus("tip");
-  }, [form]);
-
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)}>
         <FormCard>
+          <FormField
+            control={form.control}
+            name="tipComment"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Comentario de la propina</FormLabel>
+                <FormControl>
+                  <Input
+                    placeholder="Ingresa un comentario para la propina"
+                    data-testid={TEST_IDS.tipForm.comment}
+                    autoFocus
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
           <FormField
             control={form.control}
             name="tip"
@@ -66,24 +79,6 @@ export function FormTip({ customerId, tipId, tip, tipComment }: FormTipProps) {
                 <FormLabel>Propina</FormLabel>
                 <FormControl>
                   <Input type="number" placeholder="Ingresa la propina" data-testid={TEST_IDS.tipForm.tip} {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="tipComment"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Comentario de la propina (opcional)</FormLabel>
-                <FormControl>
-                  <Textarea
-                    placeholder="Ingresa un comentario para la propina"
-                    data-testid={TEST_IDS.tipForm.comment}
-                    className="resize-none"
-                    {...field}
-                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>

@@ -70,7 +70,7 @@ export function FormCustomerEdit({ carPlate, customerDescription }: CustomerSche
             name="customerDescription"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Descripción del cliente (opcional)</FormLabel>
+                <FormLabel>Descripción del cliente</FormLabel>
                 <FormControl>
                   <Textarea
                     placeholder="Ingresa una descripción del cliente"

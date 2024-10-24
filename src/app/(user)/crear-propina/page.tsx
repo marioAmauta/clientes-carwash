@@ -8,7 +8,7 @@ import { APP_LINKS } from "@/lib/constants";
 import { NextPageProps } from "@/lib/definitions";
 
 import { FormTip } from "@/components/form-tip";
-import { TypographyH1, TypographyH2 } from "@/components/ui/typography";
+import { TypographyH1, TypographyH2, TypographyLead } from "@/components/ui/typography";
 
 const title = "Agregar Propina";
 
@@ -29,8 +29,11 @@ export default async function CreateTipPage({ searchParams }: NextPageProps<null
 
   return (
     <>
-      <TypographyH1>{title}</TypographyH1>
-      <TypographyH2 className="mx-auto w-max">{`"${searchParams.carPlate}"`}</TypographyH2>
+      <header className="space-y-5 text-center">
+        <TypographyH2>{title}</TypographyH2>
+        <TypographyH1>{searchParams.carPlate}</TypographyH1>
+        {foundCustomer.customerDescription && <TypographyLead>{foundCustomer.customerDescription}</TypographyLead>}
+      </header>
       <FormTip customerId={foundCustomer.id} />
     </>
   );
