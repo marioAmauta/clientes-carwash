@@ -5,7 +5,7 @@ import { verifyUserLoggedIn } from "@/data-access/auth-check";
 import { getTipById } from "@/data-access/tip";
 
 import { APP_LINKS } from "@/lib/constants";
-import { NextPageProps } from "@/lib/definitions";
+import { SearchParams } from "@/lib/definitions";
 
 import { FormTip } from "@/components/form-tip";
 import { TypographyH1, TypographyH2, TypographyLead } from "@/components/ui/typography";
@@ -17,8 +17,12 @@ export const metadata: Metadata = {
 };
 
 export default async function EditTipPage({
-  searchParams: { tipId, carPlate }
-}: NextPageProps<null, { tipId: string; carPlate: string }>) {
+  searchParams
+}: {
+  searchParams: SearchParams<{ tipId: string; carPlate: string }>;
+}) {
+  const { tipId, carPlate } = await searchParams;
+
   await verifyUserLoggedIn();
 
   const foundTip = await getTipById({ id: tipId });

@@ -5,7 +5,7 @@ import { verifyUserLoggedIn } from "@/data-access/auth-check";
 import { getCustomerIdByCarPlate } from "@/data-access/customer";
 
 import { APP_LINKS } from "@/lib/constants";
-import { NextPageProps } from "@/lib/definitions";
+import { SearchParams } from "@/lib/definitions";
 
 import { FormTip } from "@/components/form-tip";
 import { TypographyH1, TypographyH2, TypographyLead } from "@/components/ui/typography";
@@ -16,7 +16,9 @@ export const metadata: Metadata = {
   title
 };
 
-export default async function CreateTipPage({ searchParams }: NextPageProps<null, { carPlate: string }>) {
+export default async function CreateTipPage(props: { searchParams: SearchParams<{ carPlate: string }> }) {
+  const searchParams = await props.searchParams;
+
   await verifyUserLoggedIn();
 
   const foundCustomer = await getCustomerIdByCarPlate({ carPlate: searchParams.carPlate });

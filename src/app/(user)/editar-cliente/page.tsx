@@ -5,7 +5,7 @@ import { verifyUserLoggedIn } from "@/data-access/auth-check";
 import { getCustomerWithLastTipByCarPlate } from "@/data-access/customer";
 
 import { APP_LINKS } from "@/lib/constants";
-import { NextPageProps } from "@/lib/definitions";
+import { SearchParams } from "@/lib/definitions";
 
 import { TypographyH2 } from "@/components/ui/typography";
 
@@ -17,9 +17,9 @@ export const metadata: Metadata = {
   title
 };
 
-export default async function EditCustomerPage({
-  searchParams: { carPlate }
-}: NextPageProps<null, { carPlate: string }>) {
+export default async function EditCustomerPage({ searchParams }: { searchParams: SearchParams<{ carPlate: string }> }) {
+  const { carPlate } = await searchParams;
+
   await verifyUserLoggedIn();
 
   const foundCustomer = await getCustomerWithLastTipByCarPlate({ carPlate });

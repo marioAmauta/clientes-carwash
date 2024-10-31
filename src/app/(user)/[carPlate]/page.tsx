@@ -2,7 +2,7 @@ import { verifyUserLoggedIn } from "@/data-access/auth-check";
 import { getCustomerWithTipsByCarPlate } from "@/data-access/customer";
 
 import { APP_LINKS, TEST_IDS, SORTING_OPTIONS_TIP_AND_CUSTOMER } from "@/lib/constants";
-import { NextPageProps } from "@/lib/definitions";
+import { Params, SearchParams } from "@/lib/definitions";
 import { generatePaginationParams, getChileanDateFormat } from "@/lib/utils";
 
 import { ListGrid } from "@/components/layout/list-grid";
@@ -16,12 +16,17 @@ import { ButtonContainerCustomerDetails } from "./button-container-customer-deta
 import { CardTip } from "./card-tip";
 
 export default async function CustomerDetailPage({
-  params: { carPlate },
+  params,
   searchParams
-}: NextPageProps<{ carPlate: string }>) {
+}: {
+  params: Params<{ carPlate: string }>;
+  searchParams: SearchParams;
+}) {
+  const { carPlate } = await params;
+
   const { user } = await verifyUserLoggedIn();
 
-  const { page, limit, sort, start, end } = generatePaginationParams({ searchParams });
+  const { page, limit, sort, start, end } = await generatePaginationParams({ searchParams });
 
   const foundCustomer = await getCustomerWithTipsByCarPlate({ carPlate, skip: start, take: limit, sort });
 

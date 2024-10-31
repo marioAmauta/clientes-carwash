@@ -3,7 +3,7 @@ import { Prisma } from "@prisma/client";
 import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
 
-import { NextPageProps, SortOptions } from "./definitions";
+import { SearchParams, SortOptions } from "./definitions";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -46,7 +46,9 @@ export function getSortOption(sort: SortOptions) {
   }
 }
 
-export function generatePaginationParams({ searchParams }: { searchParams: NextPageProps["searchParams"] }) {
+export async function generatePaginationParams(props: { searchParams: SearchParams }) {
+  const searchParams = await props.searchParams;
+
   const page = searchParams.page ? Number(searchParams.page) : 1;
   const limit = searchParams.limit ? Number(searchParams.limit) : 6;
   const sort = (searchParams.sort ? searchParams.sort : ("newest" as SortOptions)) as SortOptions;

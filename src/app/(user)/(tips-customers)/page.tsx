@@ -2,7 +2,7 @@ import { verifyUserLoggedIn } from "@/data-access/auth-check";
 import { getCardTipWithCustomerInfo, getTotalTips } from "@/data-access/tip";
 
 import { APP_LINKS, TEST_IDS, SORTING_OPTIONS_TIP_AND_CUSTOMER } from "@/lib/constants";
-import { NextPageProps } from "@/lib/definitions";
+import { SearchParams } from "@/lib/definitions";
 import { generatePaginationParams } from "@/lib/utils";
 
 import { CardTipWithCustomerInfo } from "@/components/card-tip-with-customer-info";
@@ -13,10 +13,10 @@ import { LinkButtonCreate } from "@/components/link-button-create";
 import { Card } from "@/components/ui/card";
 import { TypographyLead } from "@/components/ui/typography";
 
-export default async function TipsPage({ searchParams }: NextPageProps) {
+export default async function TipsPage({ searchParams }: { searchParams: SearchParams }) {
   const { user } = await verifyUserLoggedIn();
 
-  const { page, limit, sort, start, end } = generatePaginationParams({ searchParams });
+  const { page, limit, sort, start, end } = await generatePaginationParams({ searchParams });
 
   const tips = await getCardTipWithCustomerInfo({ skip: start, take: limit, sort });
 

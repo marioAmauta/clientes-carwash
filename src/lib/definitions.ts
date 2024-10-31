@@ -38,10 +38,9 @@ export type NewInvitationCodeSchemaType = z.infer<typeof newInvitationCodeSchema
 
 export type SearchCarPlateSchemaType = z.infer<typeof searchCarPlateSchema>;
 
-export type NextPageProps<paramsType = {}, searchParamsType = Record<string, string | string[] | undefined>> = {
-  params: paramsType;
-  searchParams: searchParamsType;
-};
+export type Params<T> = Promise<T>;
+
+export type SearchParams<T = { [key: string]: string | string[] | undefined }> = Promise<T>;
 
 export type SortOptions = "newest" | "oldest" | "highest" | "lowest";
 

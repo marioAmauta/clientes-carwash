@@ -5,15 +5,18 @@ import { getCustomersCreatedByUserCount } from "@/data-access/customer";
 import { getTipsCreatedByUserCount } from "@/data-access/tip";
 
 import { APP_LINKS, TEST_IDS } from "@/lib/constants";
+import { Params } from "@/lib/definitions";
 
 import { TabsMenuLink, TabsMenuLinkType } from "@/components/layout/tabs-menu-link";
 import { LinkButtonCreate } from "@/components/link-button-create";
 import { TypographyH1, TypographyLead } from "@/components/ui/typography";
 
 export default async function TipsCustomersUserProfileLayout({
-  children,
-  params: { username }
-}: PropsWithChildren<{ params: { username: string } }>) {
+  params,
+  children
+}: PropsWithChildren<{ params: Params<{ username: string }> }>) {
+  const { username } = await params;
+
   const { user } = await verifyUserLoggedIn({ username, checkIfIsTheSameUser: true });
 
   const tipsCreatedByUserCount = await getTipsCreatedByUserCount({ createdById: user.id });
