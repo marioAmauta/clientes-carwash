@@ -41,7 +41,7 @@ const PaginationLink = ({ className, isActive, size = "icon", ...props }: Pagina
       }),
       className
     )}
-    scroll
+    scroll={true}
     {...props}
   />
 );
