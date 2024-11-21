@@ -11,6 +11,9 @@ import { TabsMenuLink, TabsMenuLinkType } from "@/components/layout/tabs-menu-li
 import { LinkButtonCreate } from "@/components/link-button-create";
 import { TypographyH1, TypographyLead } from "@/components/ui/typography";
 
+import { ButtonUpdateProfile } from "./button-update-profile";
+import { FormUpdateProfile } from "./form-update-profile";
+
 export default async function TipsCustomersUserProfileLayout({
   params,
   children
@@ -54,6 +57,12 @@ export default async function TipsCustomersUserProfileLayout({
 
   return (
     <>
+      <header className="flex flex-wrap items-center justify-center gap-4">
+        <TypographyH1 className="break-all">{user.username}</TypographyH1>
+        <ButtonUpdateProfile>
+          <FormUpdateProfile username={user.username} userId={user.id} />
+        </ButtonUpdateProfile>
+      </header>
       <TabsMenuLink tabs={tabs} />
       {children}
     </>

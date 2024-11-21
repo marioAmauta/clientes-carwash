@@ -7,7 +7,9 @@ import {
   newInvitationCodeSchema,
   registerSchema,
   searchCarPlateSchema,
-  tipSchema
+  tipSchema,
+  updateProfileSchemaData,
+  updateProfileSchemaForm
 } from "./schemas";
 
 export enum Roles {
@@ -37,6 +39,10 @@ export type TipSchemaType = z.infer<typeof tipSchema>;
 export type NewInvitationCodeSchemaType = z.infer<typeof newInvitationCodeSchema>;
 
 export type SearchCarPlateSchemaType = z.infer<typeof searchCarPlateSchema>;
+
+export type UpdateProfileSchemaDataType = z.infer<typeof updateProfileSchemaData>;
+
+export type UpdateProfileSchemaFormType = z.infer<typeof updateProfileSchemaForm>;
 
 export type Params<T> = Promise<T>;
 

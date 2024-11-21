@@ -8,7 +8,9 @@ const trimmedOptionalString = trimmedString.optional();
 
 export const invitationCodeSchema = trimmedString.min(6, { message: ERROR_MESSAGES.INVALID_INVITATION_CODE });
 
-const usernameSchema = trimmedString.min(1, { message: ERROR_MESSAGES.USERNAME_FORM_ERROR });
+const usernameSchema = trimmedString
+  .min(1, { message: ERROR_MESSAGES.USERNAME_FORM_ERROR })
+  .max(25, ERROR_MESSAGES.USERNAME_FORM_ERROR_MAX);
 
 const emailSchema = trimmedString.email({ message: ERROR_MESSAGES.EMAIL_FORM_ERROR });
 
@@ -51,3 +53,7 @@ export const tipSchema = z.object({
 export const newCustomerSchema = z.object({}).merge(customerSchema).merge(tipSchema);
 
 export const searchCarPlateSchema = customerSchema.pick({ carPlate: true });
+
+export const updateProfileSchemaData = z.object({ userId: trimmedString, username: usernameSchema });
+
+export const updateProfileSchemaForm = z.object({ username: usernameSchema });

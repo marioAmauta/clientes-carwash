@@ -30,6 +30,7 @@ export const ERROR_MESSAGES = Object.freeze({
   ALREADY_USED_INVITATION_CODE: "El código de invitación ya ha sido usado",
   ALREADY_EXISTS_INVITATION_CODE: "El código de invitación ya existe",
   USERNAME_FORM_ERROR: "El usuario debe tener al menos 1 carácter",
+  USERNAME_FORM_ERROR_MAX: "El usuario debe tener como máximo 25 caracteres",
   ALREADY_USED_USERNAME: "El nombre de usuario ya está en uso, por favor elige otro",
   EMAIL_FORM_ERROR: "El email no es válido",
   ALREADY_USED_EMAIL: "El email ya está en uso, por favor elige otro",
@@ -80,6 +81,10 @@ export const TEST_IDS = Object.freeze({
   searchForm: {
     search: "search",
     submitButton: "submitButton"
+  },
+  updateProfileForm: {
+    username: "update:username",
+    submitButton: "update:submitButton"
   },
   searchButtonTrigger: "searchButtonTrigger",
   userMenuButtonTrigger: "userMenuButtonTrigger",

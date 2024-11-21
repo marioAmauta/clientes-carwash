@@ -3,7 +3,7 @@ import "server-only";
 import { prisma } from "@/db";
 import { cache } from "react";
 
-import { LoginSchemaType, RegisterSchemaType } from "@/lib/definitions";
+import { LoginSchemaType, RegisterSchemaType, UpdateProfileSchemaDataType } from "@/lib/definitions";
 
 export const getUsersQuantityForRegisterAction = cache(async () => {
   return await prisma.user.count();
@@ -53,3 +53,15 @@ export const getUserByEmailForLoginAction = cache(async ({ email }: Pick<LoginSc
     }
   });
 });
+
+export async function updateProfileInfo({ userId, username }: UpdateProfileSchemaDataType) {
+  return await prisma.user.update({
+    where: { id: userId },
+    data: {
+      username
+    },
+    select: {
+      username: true
+    }
+  });
+}
