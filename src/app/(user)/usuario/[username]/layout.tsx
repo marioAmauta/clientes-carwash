@@ -9,10 +9,9 @@ import { Params } from "@/lib/definitions";
 
 import { TabsMenuLink, TabsMenuLinkType } from "@/components/layout/tabs-menu-link";
 import { LinkButtonCreate } from "@/components/link-button-create";
-import { TypographyH1, TypographyLead } from "@/components/ui/typography";
+import { TypographyLead } from "@/components/ui/typography";
 
-import { ButtonUpdateProfile } from "./button-update-profile";
-import { FormUpdateProfile } from "./form-update-profile";
+import { ProfileHeader } from "./profile-header";
 
 export default async function TipsCustomersUserProfileLayout({
   params,
@@ -27,7 +26,7 @@ export default async function TipsCustomersUserProfileLayout({
   if (tipsCreatedByUserCount < 1) {
     return (
       <>
-        <TypographyH1>{user.username}</TypographyH1>
+        <ProfileHeader username={user.username} userId={user.id} />
         <TypographyLead className="text-center">No has creado clientes</TypographyLead>
         <div className="mx-auto w-fit">
           <LinkButtonCreate
@@ -57,12 +56,7 @@ export default async function TipsCustomersUserProfileLayout({
 
   return (
     <>
-      <header className="flex flex-wrap items-center justify-center gap-4">
-        <TypographyH1 className="break-all">{user.username}</TypographyH1>
-        <ButtonUpdateProfile>
-          <FormUpdateProfile username={user.username} userId={user.id} />
-        </ButtonUpdateProfile>
-      </header>
+      <ProfileHeader username={user.username} userId={user.id} />
       <TabsMenuLink tabs={tabs} />
       {children}
     </>

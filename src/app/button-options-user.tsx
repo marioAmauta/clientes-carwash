@@ -53,7 +53,9 @@ export function ButtonOptionsUser({ username }: Pick<User, "username">) {
         <DropdownMenuContent align="end">
           <DropdownMenuLabel>Hola {username}!</DropdownMenuLabel>
           <DropdownMenuSeparator />
-          <DropdownMenuItem onSelect={navigateToProfile}>Ver perfil</DropdownMenuItem>
+          <DropdownMenuItem onSelect={navigateToProfile} data-testid={TEST_IDS.profileButton}>
+            Ver perfil
+          </DropdownMenuItem>
           <DropdownMenuItem onSelect={eventPreventDefault}>
             <ButtonLogout onLogout={onLogout} />
           </DropdownMenuItem>

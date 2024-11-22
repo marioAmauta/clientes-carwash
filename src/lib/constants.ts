@@ -48,6 +48,8 @@ export const SUCCESS_MESSAGES = Object.freeze({
 });
 
 export const TEST_IDS = Object.freeze({
+  profileButton: "profileButton",
+  editProfileButton: "editProfileButton",
   registerForm: {
     invitationCode: "invitationCode",
     username: "username",

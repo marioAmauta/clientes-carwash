@@ -18,11 +18,15 @@ if (process.env.NODE_ENV !== "production") {
 }
 
 export async function resetDb() {
-  await prismaTest.user.deleteMany();
+  await resetUsers();
+  await resetInvitationCodes();
+  await resetCustomers();
   await prismaTest.session.deleteMany();
-  await prismaTest.invitationCode.deleteMany();
-  await prismaTest.customer.deleteMany();
   await prismaTest.tip.deleteMany();
+}
+
+export async function resetUsers() {
+  await prismaTest.user.deleteMany();
 }
 
 export async function resetInvitationCodes() {
