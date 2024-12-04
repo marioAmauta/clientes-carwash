@@ -23,7 +23,7 @@ import { Form, FormControl, FormField, FormItem, FormMessage } from "@/component
 import { Input } from "@/components/ui/input";
 
 export function ButtonSearch() {
-  const { push } = useRouter();
+  const router = useRouter();
   const [open, setOpen] = useState(false);
 
   const form = useForm<SearchCarPlateSchemaType>({
@@ -40,7 +40,7 @@ export function ButtonSearch() {
 
     setOpen(false);
 
-    push(`/${carPlate.toUpperCase()}`);
+    router.push(`/${carPlate.toUpperCase()}`);
 
     form.reset();
   }
@@ -52,7 +52,7 @@ export function ButtonSearch() {
           <Search className="size-5" />
         </Button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[425px]">
+      <DialogContent>
         <DialogHeader>
           <DialogTitle>Buscar cliente</DialogTitle>
           <DialogDescription>Busca al cliente por su patente</DialogDescription>

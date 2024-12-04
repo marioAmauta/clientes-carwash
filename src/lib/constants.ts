@@ -13,9 +13,10 @@ export const APP_LINKS = Object.freeze({
   USER_PAGE: "/usuario",
   CUSTOMERS_PAGE: "/clientes",
   NEW_CUSTOMER_PAGE: "/crear-cliente",
-  EDIT_CUSTOMER_PAGE: "/editar-cliente",
   NEW_TIP_PAGE: "/crear-propina",
-  EDIT_TIP_PAGE: "/editar-propina"
+  EDIT_TIP_PAGE: "/editar-propina",
+  FORGOT_PASSWORD_PAGE: "/olvide-clave",
+  RESET_PASSWORD_PAGE: "/restablecer-clave"
 });
 
 export const ERROR_MESSAGES = Object.freeze({

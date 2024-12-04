@@ -1,33 +1,39 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
+import { usePathname, useRouter } from "next/navigation";
 import { useTransition } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 
-import { TEST_IDS } from "@/lib/constants";
-import { TipSchemaType } from "@/lib/definitions";
+import { APP_LINKS, TEST_IDS } from "@/lib/constants";
+import { TipDataForEdit, TipSchemaType } from "@/lib/definitions";
 import { tipSchema } from "@/lib/schemas";
 
-import { createTipAction } from "@/app/(user)/crear-propina/actions";
-import { editTipAction } from "@/app/(user)/editar-propina/actions";
+import { createTipAction, editTipAction } from "@/app/(user)/actions";
 
-import { FormButtonContainer } from "@/components/form-button-container";
 import { FormButtonLoading } from "@/components/form-button-loading";
 import { FormCard } from "@/components/form-card";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 
-type FormTipProps = Partial<{ customerId: string; tipId: string } & TipSchemaType>;
+type FormTipProps = {
+  editTip?: boolean;
+  tip?: TipDataForEdit;
+  customerId: string;
+  closeDialog: () => void;
+};
 
-export function FormTip({ customerId, tipId, tip, tipComment }: FormTipProps) {
+export function FormTip({ editTip, tip, customerId, closeDialog }: FormTipProps) {
+  const router = useRouter();
+  const pathname = usePathname();
   const [isPending, startTransition] = useTransition();
 
   const form = useForm<TipSchemaType>({
     resolver: zodResolver(tipSchema),
     defaultValues: {
-      tip: tip ?? "",
-      tipComment: tipComment ?? ""
+      tip: tip?.tip.toString() ?? "",
+      tipComment: tip?.tipComment ?? ""
     }
   });
 
@@ -35,17 +41,21 @@ export function FormTip({ customerId, tipId, tip, tipComment }: FormTipProps) {
     startTransition(async () => {
       let response;
 
-      if (customerId) {
+      if (editTip && tip) {
+        response = await editTipAction({ data, tipId: tip.id });
+      } else {
         response = await createTipAction({ data, customerId });
-      }
 
-      if (tipId) {
-        response = await editTipAction({ data, id: tipId });
+        router.push(pathname.replace(APP_LINKS.CUSTOMERS_PAGE, "/"));
       }
 
       if (response && !response.success) {
         toast.error(response.message);
       }
+
+      router.refresh();
+
+      closeDialog();
     });
   }
 
@@ -63,7 +73,6 @@ export function FormTip({ customerId, tipId, tip, tipComment }: FormTipProps) {
                   <Input
                     placeholder="Ingresa un comentario para la propina"
                     data-testid={TEST_IDS.tipForm.comment}
-                    autoFocus
                     {...field}
                   />
                 </FormControl>
@@ -85,11 +94,14 @@ export function FormTip({ customerId, tipId, tip, tipComment }: FormTipProps) {
             )}
           />
         </FormCard>
-        <FormButtonContainer withCancelButton>
-          <FormButtonLoading type="submit" loading={isPending} data-testid={TEST_IDS.tipForm.submitButton}>
-            {customerId ? "Agregar" : "Actualizar"}
-          </FormButtonLoading>
-        </FormButtonContainer>
+        <FormButtonLoading
+          type="submit"
+          loading={isPending}
+          data-testid={TEST_IDS.tipForm.submitButton}
+          className="mt-4 w-full"
+        >
+          {editTip ? "Actualizar" : "Agregar"}
+        </FormButtonLoading>
       </form>
     </Form>
   );

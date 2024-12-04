@@ -18,11 +18,12 @@ export type CardTipWithCustomerInfoData = Prisma.TipGetPayload<{
     user: {
       select: {
         id: true;
-        username: true;
+        name: true;
       };
     };
     customer: {
       select: {
+        id: true;
         carPlate: true;
         customerDescription: true;
         createdAt: true;
@@ -34,12 +35,12 @@ export type CardTipWithCustomerInfoData = Prisma.TipGetPayload<{
 
 type CardTipWithCustomerInfoProps = CardTipWithCustomerInfoData & {
   userId: string;
-  hiddenCreatorUsername?: boolean;
+  hiddenCreatorName?: boolean;
 };
 
 export async function CardTipWithCustomerInfo({
   userId,
-  hiddenCreatorUsername,
+  hiddenCreatorName,
   id,
   tip,
   tipComment,
@@ -54,20 +55,41 @@ export async function CardTipWithCustomerInfo({
     <CardSection>
       <div className="flex items-center justify-between">
         <CardSubTitle>{customer.carPlate}</CardSubTitle>
-        {isCustomerCreator ? <ButtonOptionsCustomer carPlate={customer.carPlate} /> : null}
+        {isCustomerCreator ? (
+          <ButtonOptionsCustomer
+            customer={{
+              id: customer.id,
+              carPlate: customer.carPlate,
+              customerDescription: customer.customerDescription
+            }}
+          />
+        ) : null}
       </div>
       {customer.customerDescription ? <CardDescription>{customer.customerDescription}</CardDescription> : null}
       <CardSeparator />
       <div className="flex items-center justify-between">
         <CardTitle>{getChileanMoneyFormat(tip)}</CardTitle>
-        {isTipCreator ? <ButtonOptionsTip tipId={id} carPlate={customer.carPlate} /> : null}
+        {isTipCreator ? (
+          <ButtonOptionsTip
+            tip={{
+              id,
+              tip,
+              tipComment
+            }}
+            customer={{
+              id: customer.id,
+              carPlate: customer.carPlate,
+              customerDescription: customer.customerDescription
+            }}
+          />
+        ) : null}
       </div>
       {tipComment ? <CardDescription>{tipComment}</CardDescription> : null}
-      {user?.username ? (
+      {user?.name ? (
         <>
-          {hiddenCreatorUsername ? null : (
+          {hiddenCreatorName ? null : (
             <Badge variant="outline" className="w-fit">
-              {user.username}
+              {user.name}
             </Badge>
           )}
         </>
@@ -76,7 +98,7 @@ export async function CardTipWithCustomerInfo({
         {getChileanDateFormat(createdAt)}
       </Badge>
       <CardSeparator />
-      <CardButtonSectionCustomer carPlate={customer.carPlate} />
+      <CardButtonSectionCustomer customer={customer} />
     </CardSection>
   );
 }

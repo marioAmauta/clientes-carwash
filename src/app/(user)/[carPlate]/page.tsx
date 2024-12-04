@@ -57,12 +57,17 @@ export default async function CustomerDetailPage({
         {foundCustomer.customerDescription ? (
           <TypographyLead className="text-center">{foundCustomer.customerDescription}</TypographyLead>
         ) : null}
-        {foundCustomer.createdBy?.username ? (
-          <Badge variant="outline">{foundCustomer.createdBy?.username}</Badge>
-        ) : null}
+        {foundCustomer.createdBy?.name ? <Badge variant="outline">{foundCustomer.createdBy?.name}</Badge> : null}
         <Badge variant="outline">{getChileanDateFormat(foundCustomer.createdAt)}</Badge>
       </header>
-      <ButtonContainerCustomerDetails carPlate={carPlate} isCustomerCreator={isCustomerCreator} />
+      <ButtonContainerCustomerDetails
+        customer={{
+          id: foundCustomer.id,
+          carPlate: foundCustomer.carPlate,
+          customerDescription: foundCustomer.customerDescription
+        }}
+        isCustomerCreator={isCustomerCreator}
+      />
       {totalCustomerTips > 0 ? (
         <>
           <SortingControl
@@ -74,7 +79,16 @@ export default async function CustomerDetailPage({
           />
           <ListGrid>
             {foundCustomer.tips.map((tips) => (
-              <CardTip key={tips.id} userId={user.id} carPlate={carPlate} {...tips} />
+              <CardTip
+                key={tips.id}
+                loggedUserId={user.id}
+                customer={{
+                  id: foundCustomer.id,
+                  carPlate: foundCustomer.carPlate,
+                  customerDescription: foundCustomer.customerDescription
+                }}
+                {...tips}
+              />
             ))}
           </ListGrid>
           <PaginationControl start={start} end={end} page={page} limit={limit} totalItems={totalCustomerTips} />

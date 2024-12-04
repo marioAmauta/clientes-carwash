@@ -30,7 +30,7 @@ export default async function CustomersPage({ searchParams }: { searchParams: Se
       />
       <ListGrid>
         {customers.map((customer) => (
-          <CardCustomer {...customer} key={customer.carPlate} userId={user.id}></CardCustomer>
+          <CardCustomer {...customer} key={customer.carPlate} loggedUserId={user.id}></CardCustomer>
         ))}
       </ListGrid>
       <PaginationControl page={page} limit={limit} start={start} end={end} totalItems={totalCustomers} />

@@ -77,7 +77,7 @@ export async function setUserToAdminByEmail({ email }: { email: string }) {
 }
 
 export async function deleteCustomerByCarPlate({ carPlate }: { carPlate: string }) {
-  const foundCustomer = await prismaTest.customer.findUnique({
+  const foundCustomer = await prismaTest.customer.findMany({
     where: {
       carPlate
     }
@@ -87,7 +87,7 @@ export async function deleteCustomerByCarPlate({ carPlate }: { carPlate: string 
     return;
   }
 
-  await prismaTest.customer.delete({
+  await prismaTest.customer.deleteMany({
     where: {
       carPlate
     }

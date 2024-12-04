@@ -94,11 +94,12 @@ export const getCardTipWithCustomerInfo = cache(
         user: {
           select: {
             id: true,
-            username: true
+            name: true
           }
         },
         customer: {
           select: {
+            id: true,
             carPlate: true,
             customerDescription: true,
             createdAt: true,
@@ -132,7 +133,7 @@ export const getTipsCreatedByUserWithCustomerInfo = cache(
         user: {
           select: {
             id: true,
-            username: true
+            name: true
           }
         },
         customer: {

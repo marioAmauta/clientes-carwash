@@ -15,31 +15,46 @@ export type CardTipData = Prisma.TipGetPayload<{
     user: {
       select: {
         id: true;
-        username: true;
+        name: true;
+      };
+    };
+    customer: {
+      select: {
+        id: true;
+        carPlate: true;
+        customerDescription: true;
       };
     };
   };
 }>;
 
 export type CardTipProps = CardTipData & {
-  userId: string;
-  carPlate: string;
+  loggedUserId: string;
 };
 
-export async function CardTip({ userId, carPlate, id, tip, tipComment, createdAt, user }: CardTipProps) {
-  const isTipCreator = userId === user?.id;
+export async function CardTip({ loggedUserId, id, tip, tipComment, createdAt, user, customer }: CardTipProps) {
+  const isTipCreator = loggedUserId === user?.id;
 
   return (
     <Card>
       <CardSection>
         <div className="flex items-center justify-between">
           <CardTitle>{getChileanMoneyFormat(tip)}</CardTitle>
-          {isTipCreator ? <ButtonOptionsTip tipId={id} carPlate={carPlate} /> : null}
+          {isTipCreator ? (
+            <ButtonOptionsTip
+              tip={{
+                id,
+                tip,
+                tipComment
+              }}
+              customer={customer}
+            />
+          ) : null}
         </div>
         {tipComment ? <CardDescription>{tipComment}</CardDescription> : null}
-        {user?.username ? (
+        {user?.name ? (
           <Badge variant="outline" className="w-fit">
-            {user.username}
+            {user.name}
           </Badge>
         ) : null}
         <Badge variant="outline" className="w-fit">

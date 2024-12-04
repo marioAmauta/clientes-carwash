@@ -10,46 +10,56 @@ import { Card, CardDescription, CardSection, CardTitle } from "@/components/ui/c
 
 export type CardCustomerData = Prisma.CustomerGetPayload<{
   select: {
+    id: true;
     carPlate: true;
     customerDescription: true;
     createdAt: true;
     createdBy: {
       select: {
         id: true;
-        username: true;
+        name: true;
       };
     };
   };
 }>;
 
 type CardCustomerProps = CardCustomerData & {
-  userId: string;
-  hiddenCreatorUsername?: boolean;
+  loggedUserId: string;
+  hiddenCreatorName?: boolean;
 };
 
 export async function CardCustomer({
-  userId,
-  hiddenCreatorUsername,
+  loggedUserId,
+  hiddenCreatorName,
+  id,
   carPlate,
   customerDescription,
   createdAt,
   createdBy
 }: CardCustomerProps) {
-  const isCustomerCreator = userId === createdBy?.id;
+  const isCustomerCreator = loggedUserId === createdBy?.id;
 
   return (
     <Card>
       <CardSection>
         <div className="flex justify-between">
           <CardTitle>{carPlate}</CardTitle>
-          {isCustomerCreator ? <ButtonOptionsCustomer carPlate={carPlate} /> : null}
+          {isCustomerCreator ? (
+            <ButtonOptionsCustomer
+              customer={{
+                id,
+                carPlate,
+                customerDescription
+              }}
+            />
+          ) : null}
         </div>
         <CardDescription>{customerDescription ? <span>{customerDescription}</span> : null}</CardDescription>
-        {createdBy?.username ? (
+        {createdBy?.name ? (
           <>
-            {hiddenCreatorUsername ? null : (
+            {hiddenCreatorName ? null : (
               <Badge variant="outline" className="w-fit">
-                {createdBy.username}
+                {createdBy.name}
               </Badge>
             )}
           </>
@@ -58,7 +68,13 @@ export async function CardCustomer({
           {getChileanDateFormat(createdAt)}
         </Badge>
         <CardSeparator />
-        <CardButtonSectionCustomer carPlate={carPlate} />
+        <CardButtonSectionCustomer
+          customer={{
+            id,
+            carPlate,
+            customerDescription
+          }}
+        />
       </CardSection>
     </Card>
   );

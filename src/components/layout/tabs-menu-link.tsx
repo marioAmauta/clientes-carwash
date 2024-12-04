@@ -15,9 +15,10 @@ export type TabsMenuLinkType = {
 
 type TabsMenuLinkProps = {
   tabs: TabsMenuLinkType[];
+  hideBadge?: boolean;
 };
 
-export function TabsMenuLink({ tabs }: TabsMenuLinkProps) {
+export function TabsMenuLink({ tabs, hideBadge }: TabsMenuLinkProps) {
   const pathname = usePathname();
 
   return (
@@ -27,7 +28,7 @@ export function TabsMenuLink({ tabs }: TabsMenuLinkProps) {
           <TabsTrigger key={hrefAsValue} value={hrefAsValue} asChild>
             <Link href={hrefAsValue} data-testid={testId} className="gap-2">
               <span>{triggerLabel}</span>
-              {totalItemsCount ? (
+              {!hideBadge ? (
                 <Badge variant="outline" className="w-max">
                   {totalItemsCount}
                 </Badge>

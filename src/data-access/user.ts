@@ -3,16 +3,16 @@ import "server-only";
 import { prisma } from "@/db";
 import { cache } from "react";
 
-import { LoginSchemaType, RegisterSchemaType, UpdateProfileSchemaDataType } from "@/lib/definitions";
+import { RegisterSchemaType, UpdateProfileSchemaDataType } from "@/lib/definitions";
 
 export const getUsersQuantityForRegisterAction = cache(async () => {
   return await prisma.user.count();
 });
 
 export const getUsernameForRegisterAction = cache(async ({ username }: Pick<RegisterSchemaType, "username">) => {
-  return await prisma.user.findUnique({
-    where: { username },
-    select: { username: true }
+  return await prisma.user.findFirst({
+    where: { name: username },
+    select: { name: true }
   });
 });
 
@@ -23,45 +23,14 @@ export const getEmailForRegisterAction = cache(async ({ email }: Pick<RegisterSc
   });
 });
 
-export async function createUserForRegisterAction({
-  username,
-  email,
-  password
-}: Pick<RegisterSchemaType, "username" | "email" | "password">) {
-  return await prisma.user.create({
-    data: {
-      username,
-      email,
-      hashedPassword: password
-    },
-    select: {
-      id: true
-    }
-  });
-}
-
-export const getUserByEmailForLoginAction = cache(async ({ email }: Pick<LoginSchemaType, "email">) => {
-  return await prisma.user.findFirst({
-    where: {
-      email
-    },
-    select: {
-      id: true,
-      username: true,
-      email: true,
-      hashedPassword: true
-    }
-  });
-});
-
 export async function updateProfileInfo({ userId, username }: UpdateProfileSchemaDataType) {
   return await prisma.user.update({
     where: { id: userId },
     data: {
-      username
+      name: username
     },
     select: {
-      username: true
+      name: true
     }
   });
 }

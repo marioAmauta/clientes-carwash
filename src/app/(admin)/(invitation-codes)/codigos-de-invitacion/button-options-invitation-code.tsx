@@ -4,11 +4,14 @@ import { useTransition } from "react";
 import { toast } from "sonner";
 
 import { ERROR_MESSAGES, SUCCESS_MESSAGES, TEST_IDS } from "@/lib/constants";
+import { eventPreventDefault } from "@/lib/utils";
 
 import { useCopyToClipboard } from "@/hooks/use-copy-to-clipboard";
 
-import { ButtonDelete } from "@/components/button-delete";
+import { ButtonDeleteWithAlertDialog } from "@/components/button-delete-with-alert-dialog";
 import { ButtonOptions } from "@/components/button-options";
+import { Button } from "@/components/ui/button";
+import { DropdownMenuItem } from "@/components/ui/dropdown-menu";
 
 import { deleteInvitationCodeAction } from "./actions";
 
@@ -39,25 +42,23 @@ export function ButtonOptionsInvitationCode({ code }: { code: string }) {
   }
 
   return (
-    <ButtonOptions
-      mainActionLabel="Copiar Código"
-      onMainAction={onCopyInvitationCode}
-      isPending={isPending}
-      testIds={{
-        triggerButton: `${TEST_IDS.invitationCodeOptionsButton}${code}`,
-        mainActionButton: `${TEST_IDS.invitationCodeCopyButton}${code}`
-      }}
-      deleteActionChildren={
-        <ButtonDelete
+    <ButtonOptions isPending={isPending} triggerButtonTestId={`${TEST_IDS.invitationCodeOptionsButton}${code}`}>
+      <DropdownMenuItem onSelect={onCopyInvitationCode} data-testid={`${TEST_IDS.invitationCodeCopyButton}${code}`}>
+        Copiar Código
+      </DropdownMenuItem>
+      <DropdownMenuItem onSelect={eventPreventDefault}>
+        <ButtonDeleteWithAlertDialog
           dialogTitle="¿Quieres eliminar este código?"
-          dialogActionLabel="Eliminar código"
-          onDeleteAction={onDeleteInvitationCode}
           triggerChild={
-            <span data-testid={`${TEST_IDS.invitationCodeDeleteButtonTrigger}${code}`}>Eliminar Código</span>
+            <span data-testid={`${TEST_IDS.invitationCodeDeleteButtonTrigger}${code}`}>Eliminar Propina</span>
           }
-          buttonActionTestId={`${TEST_IDS.invitationCodeDeleteButton}${code}`}
+          dialogActionChild={
+            <Button onClick={onDeleteInvitationCode} data-testid={`${TEST_IDS.invitationCodeDeleteButton}${code}`}>
+              Eliminar Código
+            </Button>
+          }
         />
-      }
-    />
+      </DropdownMenuItem>
+    </ButtonOptions>
   );
 }

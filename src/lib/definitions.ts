@@ -1,11 +1,14 @@
+import { Customer, Tip } from "@prisma/client";
 import { z } from "zod";
 
 import {
   customerSchema,
+  forgotPasswordSchema,
   loginSchema,
   newCustomerSchema,
   newInvitationCodeSchema,
   registerSchema,
+  resetPasswordSchema,
   searchCarPlateSchema,
   tipSchema,
   updateProfileSchemaData,
@@ -25,6 +28,10 @@ export type ActionReturnType =
       message?: string;
     }
   | undefined;
+
+export type ForgotPasswordSchemaType = z.infer<typeof forgotPasswordSchema>;
+
+export type ResetPasswordSchemaType = z.infer<typeof resetPasswordSchema>;
 
 export type RegisterSchemaType = z.infer<typeof registerSchema>;
 
@@ -51,3 +58,7 @@ export type SearchParams<T = { [key: string]: string | string[] | undefined }> =
 export type SortOptions = "newest" | "oldest" | "highest" | "lowest";
 
 export type PaginationArgs = { skip: number; take: number; sort: SortOptions };
+
+export type CustomerDataForEdit = Pick<Customer, "id" | "carPlate" | "customerDescription">;
+
+export type TipDataForEdit = Pick<Tip, "id" | "tip" | "tipComment">;

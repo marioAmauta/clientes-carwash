@@ -19,14 +19,14 @@ export default async function TipsCustomersUserProfileLayout({
 }: PropsWithChildren<{ params: Params<{ username: string }> }>) {
   const { username } = await params;
 
-  const { user } = await verifyUserLoggedIn({ username, checkIfIsTheSameUser: true });
+  const { user } = await verifyUserLoggedIn({ name: username, checkIfIsTheSameUser: true });
 
   const tipsCreatedByUserCount = await getTipsCreatedByUserCount({ createdById: user.id });
 
   if (tipsCreatedByUserCount < 1) {
     return (
       <>
-        <ProfileHeader username={user.username} userId={user.id} />
+        <ProfileHeader username={user.name} userId={user.id} />
         <TypographyLead className="text-center">No has creado clientes</TypographyLead>
         <div className="mx-auto w-fit">
           <LinkButtonCreate
@@ -44,19 +44,19 @@ export default async function TipsCustomersUserProfileLayout({
   const tabs: TabsMenuLinkType[] = [
     {
       triggerLabel: "Tus Propinas",
-      hrefAsValue: `${APP_LINKS.USER_PAGE}/${user.username}`,
+      hrefAsValue: `${APP_LINKS.USER_PAGE}/${user.name}`,
       totalItemsCount: tipsCreatedByUserCount
     },
     {
       triggerLabel: "Tus Clientes",
-      hrefAsValue: `${APP_LINKS.USER_PAGE}/${user.username}${APP_LINKS.CUSTOMERS_PAGE}`,
+      hrefAsValue: `${APP_LINKS.USER_PAGE}/${user.name}${APP_LINKS.CUSTOMERS_PAGE}`,
       totalItemsCount: customersCreatedByUserCount
     }
   ];
 
   return (
     <>
-      <ProfileHeader username={user.username} userId={user.id} />
+      <ProfileHeader username={user.name} userId={user.id} />
       <TabsMenuLink tabs={tabs} />
       {children}
     </>

@@ -20,7 +20,7 @@ export default async function TipsByUserPage({
 }) {
   const { username } = await params;
 
-  const { user } = await verifyUserLoggedIn({ username, checkIfIsTheSameUser: true });
+  const { user } = await verifyUserLoggedIn({ name: username, checkIfIsTheSameUser: true });
 
   const { page, limit, sort, start, end } = await generatePaginationParams({ searchParams });
 
@@ -45,7 +45,7 @@ export default async function TipsByUserPage({
       <ListGrid>
         {tipsCreatedByUserWithCustomerInfo.map((tip) => (
           <Card key={tip.id}>
-            <CardTipWithCustomerInfo {...tip} userId={user.id} hiddenCreatorUsername />
+            <CardTipWithCustomerInfo {...tip} userId={user.id} hiddenCreatorName />
           </Card>
         ))}
       </ListGrid>

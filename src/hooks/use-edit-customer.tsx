@@ -1,20 +1,11 @@
 import { Customer } from "@prisma/client";
-import { useRouter } from "next/navigation";
-import { useTransition } from "react";
-
-import { APP_LINKS } from "@/lib/constants";
+import { useState, useTransition } from "react";
 
 import { deleteCustomerAction } from "@/app/(user)/actions";
 
 export function useEditCustomer({ carPlate }: Pick<Customer, "carPlate">) {
-  const { push } = useRouter();
   const [isPending, startTransition] = useTransition();
-
-  function onEditCustomer() {
-    const params = new URLSearchParams({ carPlate });
-
-    push(`${APP_LINKS.EDIT_CUSTOMER_PAGE}?${params}`);
-  }
+  const [editCustomer, setEditCustomer] = useState(false);
 
   function onDeleteCustomer() {
     startTransition(async () => {
@@ -24,7 +15,8 @@ export function useEditCustomer({ carPlate }: Pick<Customer, "carPlate">) {
 
   return {
     isPending,
-    onEditCustomer,
+    editCustomer,
+    setEditCustomer,
     onDeleteCustomer
   };
 }

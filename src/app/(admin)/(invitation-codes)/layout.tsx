@@ -23,7 +23,7 @@ export default async function InvitationCodesLayout({ children }: PropsWithChild
 
   return (
     <>
-      <TabsMenuLink tabs={tabs} />
+      <TabsMenuLink tabs={tabs} hideBadge />
       {children}
     </>
   );

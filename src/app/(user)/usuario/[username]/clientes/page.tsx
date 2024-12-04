@@ -19,7 +19,7 @@ export default async function CustomersByUserPage({
 }) {
   const { username } = await params;
 
-  const { user } = await verifyUserLoggedIn({ username, checkIfIsTheSameUser: true });
+  const { user } = await verifyUserLoggedIn({ name: username, checkIfIsTheSameUser: true });
 
   const { page, limit, sort, start, end } = await generatePaginationParams({ searchParams });
 
@@ -43,7 +43,7 @@ export default async function CustomersByUserPage({
       />
       <ListGrid>
         {customersCreatedByUser.map((customer) => (
-          <CardCustomer {...customer} key={customer.carPlate} userId={user.id} hiddenCreatorUsername />
+          <CardCustomer key={customer.carPlate} loggedUserId={user.id} {...customer} hiddenCreatorName />
         ))}
       </ListGrid>
       <PaginationControl start={start} end={end} page={page} limit={limit} totalItems={customersCreatedByUserCount} />

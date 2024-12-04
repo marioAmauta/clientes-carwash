@@ -1,24 +1,20 @@
-import { Customer } from "@prisma/client";
 import Link from "next/link";
 
-import { APP_LINKS } from "@/lib/constants";
+import { CustomerDataForEdit } from "@/lib/definitions";
 import { cn } from "@/lib/utils";
+
+import { ButtonNewTip } from "@/app/button-new-tip";
 
 import { buttonVariants } from "@/components/ui/button";
 import { CardButtonSection } from "@/components/ui/card";
 
-export function CardButtonSectionCustomer({ carPlate }: Pick<Customer, "carPlate">) {
+export function CardButtonSectionCustomer({ customer }: { customer: CustomerDataForEdit }) {
   return (
-    <CardButtonSection>
-      <Link href={`/${carPlate}`} className={cn(buttonVariants({ size: "sm" }), "max-w-36")}>
+    <CardButtonSection className="gris">
+      <Link href={`/${customer.carPlate}`} className={cn(buttonVariants({ size: "sm" }))}>
         Ver Propinas
       </Link>
-      <Link
-        href={`${APP_LINKS.NEW_TIP_PAGE}?${new URLSearchParams({ carPlate })}`}
-        className={cn(buttonVariants({ size: "sm" }), "max-w-36 bg-green-500")}
-      >
-        Nueva Propina
-      </Link>
+      <ButtonNewTip customer={customer} />
     </CardButtonSection>
   );
 }

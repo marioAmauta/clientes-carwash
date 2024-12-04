@@ -33,7 +33,7 @@ export const getCustomers = cache(async ({ skip, take, sort }: PaginationArgs): 
       createdBy: {
         select: {
           id: true,
-          username: true
+          name: true
         }
       }
     }
@@ -65,7 +65,7 @@ export const getCustomersCreatedByUser = cache(
         createdBy: {
           select: {
             id: true,
-            username: true
+            name: true
           }
         }
       }
@@ -84,7 +84,7 @@ export const getCustomersCreatedByUserCount = cache(async ({ createdById }: Pick
 export const getCustomerWithLastTipByCarPlate = cache(
   async ({
     carPlate
-  }: Pick<Customer, "carPlate">): Promise<Pick<Customer, "carPlate" | "customerDescription"> | null> => {
+  }: Pick<Customer, "carPlate">): Promise<Pick<Customer, "id" | "carPlate" | "customerDescription"> | null> => {
     await verifyUserLoggedIn();
 
     const foundCustomer = await prisma.customer.findUnique({
@@ -96,6 +96,7 @@ export const getCustomerWithLastTipByCarPlate = cache(
           select: {
             customer: {
               select: {
+                id: true,
                 carPlate: true,
                 customerDescription: true
               }
@@ -109,12 +110,7 @@ export const getCustomerWithLastTipByCarPlate = cache(
       return null;
     }
 
-    const customerData = foundCustomer.tips[0].customer;
-
-    return {
-      carPlate: customerData.carPlate,
-      customerDescription: customerData.customerDescription
-    };
+    return foundCustomer.tips[0].customer;
   }
 );
 
@@ -128,9 +124,10 @@ export const getCustomerWithTipsByCarPlate = cache(
         createdBy: {
           select: {
             id: true,
-            username: true
+            name: true
           }
         },
+        id: true,
         carPlate: true,
         customerDescription: true,
         createdAt: true,
@@ -146,7 +143,7 @@ export const getCustomerWithTipsByCarPlate = cache(
             user: {
               select: {
                 id: true,
-                username: true
+                name: true
               }
             }
           }
@@ -201,20 +198,18 @@ export async function createCustomer({
 }
 
 export async function editCustomer({
+  id,
   carPlate,
-  newCarPlate,
   customerDescription
-}: Pick<Customer, "carPlate" | "customerDescription"> & {
-  newCarPlate?: string;
-}) {
+}: Pick<Customer, "id" | "carPlate" | "customerDescription">) {
   await verifyUserLoggedIn();
 
   return await prisma.customer.update({
     where: {
-      carPlate
+      id
     },
     data: {
-      carPlate: newCarPlate ? newCarPlate : carPlate,
+      carPlate,
       customerDescription
     }
   });

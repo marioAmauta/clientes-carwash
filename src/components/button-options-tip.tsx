@@ -1,54 +1,74 @@
 "use client";
 
-import { useRouter } from "next/navigation";
-import { useTransition } from "react";
+import { useState, useTransition } from "react";
 
-import { APP_LINKS, TEST_IDS } from "@/lib/constants";
+import { TEST_IDS } from "@/lib/constants";
+import { CustomerDataForEdit, TipDataForEdit } from "@/lib/definitions";
+import { eventPreventDefault } from "@/lib/utils";
 
 import { deleteTipAction } from "@/app/(user)/actions";
 
-import { ButtonDelete } from "@/components/button-delete";
+import { ButtonDeleteWithAlertDialog } from "@/components/button-delete-with-alert-dialog";
 import { ButtonOptions } from "@/components/button-options";
 
-type ButtonOptionsTipProps = {
-  tipId: string;
-  carPlate: string;
+import { FormTip } from "./form-tip";
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "./ui/dialog";
+import { DropdownMenuItem } from "./ui/dropdown-menu";
+
+export type ButtonOptionsTipProps = {
+  tip: TipDataForEdit;
+  customer: CustomerDataForEdit;
 };
 
-export function ButtonOptionsTip({ tipId, carPlate }: ButtonOptionsTipProps) {
-  const { push } = useRouter();
+export function ButtonOptionsTip({ tip, customer }: ButtonOptionsTipProps) {
+  const [isEditingTip, setIsTipEditing] = useState(false);
   const [isPending, startTransition] = useTransition();
-
-  function onEditTip() {
-    const params = new URLSearchParams({ carPlate, tipId });
-
-    push(`${APP_LINKS.EDIT_TIP_PAGE}?${params}`);
-  }
 
   function onDeleteTip() {
     startTransition(async () => {
-      await deleteTipAction({ id: tipId });
+      await deleteTipAction({ id: tip.id });
     });
   }
 
   return (
-    <ButtonOptions
-      mainActionLabel="Editar Propina"
-      onMainAction={onEditTip}
-      isPending={isPending}
-      testIds={{
-        triggerButton: `${TEST_IDS.tipOptionsButton}${carPlate}`,
-        mainActionButton: `${TEST_IDS.tipEditButton}${carPlate}`
-      }}
-      deleteActionChildren={
-        <ButtonDelete
-          dialogTitle="¿Quieres eliminar esta propina?"
-          dialogActionLabel="Eliminar propina"
-          onDeleteAction={onDeleteTip}
-          triggerChild={<span>Eliminar Propina</span>}
-          buttonActionTestId={`${TEST_IDS.tipDeleteButton}${carPlate}`}
-        />
-      }
-    />
+    <>
+      <ButtonOptions isPending={isPending} triggerButtonTestId={`${TEST_IDS.tipOptionsButton}${customer.carPlate}`}>
+        <DropdownMenuItem
+          onSelect={() => setIsTipEditing(true)}
+          data-testid={`${TEST_IDS.tipEditButton}${customer.carPlate}`}
+        >
+          Editar Propina
+        </DropdownMenuItem>
+        <DropdownMenuItem onSelect={eventPreventDefault}>
+          <ButtonDeleteWithAlertDialog
+            dialogTitle="¿Quieres eliminar esta propina?"
+            triggerChild={<span>Eliminar Propina</span>}
+            dialogActionChild={
+              <span onClick={onDeleteTip} data-testid={`${TEST_IDS.tipDeleteButton}${customer.carPlate}`}>
+                Eliminar Propina
+              </span>
+            }
+          />
+        </DropdownMenuItem>
+      </ButtonOptions>
+      <Dialog open={isEditingTip} onOpenChange={setIsTipEditing}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Editar Propina</DialogTitle>
+            <DialogDescription>
+              <span>Cliente {customer.carPlate}</span>
+              <br />
+              <span>{customer.customerDescription}</span>
+            </DialogDescription>
+          </DialogHeader>
+          <FormTip
+            tip={tip}
+            customerId={customer.id}
+            editTip={isEditingTip}
+            closeDialog={() => setIsTipEditing(false)}
+          />
+        </DialogContent>
+      </Dialog>
+    </>
   );
 }

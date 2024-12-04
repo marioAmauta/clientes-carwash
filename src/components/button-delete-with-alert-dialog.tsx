@@ -1,5 +1,3 @@
-"use client";
-
 import { ReactNode } from "react";
 
 import {
@@ -18,18 +16,10 @@ import { buttonVariants } from "@/components/ui/button";
 type ButtonDeleteProps = {
   triggerChild: ReactNode;
   dialogTitle: string;
-  dialogActionLabel: string;
-  onDeleteAction: () => void;
-  buttonActionTestId?: string;
+  dialogActionChild: ReactNode;
 };
 
-export function ButtonDelete({
-  triggerChild,
-  dialogTitle,
-  dialogActionLabel,
-  onDeleteAction,
-  buttonActionTestId
-}: ButtonDeleteProps) {
+export function ButtonDeleteWithAlertDialog({ triggerChild, dialogTitle, dialogActionChild }: ButtonDeleteProps) {
   return (
     <AlertDialog>
       <AlertDialogTrigger asChild>{triggerChild}</AlertDialogTrigger>
@@ -40,12 +30,8 @@ export function ButtonDelete({
         </AlertDialogHeader>
         <AlertDialogFooter>
           <AlertDialogCancel>Cancelar</AlertDialogCancel>
-          <AlertDialogAction
-            data-testid={buttonActionTestId}
-            onClick={onDeleteAction}
-            className={buttonVariants({ variant: "destructive" })}
-          >
-            {dialogActionLabel}
+          <AlertDialogAction className={buttonVariants({ variant: "destructive" })} asChild>
+            {dialogActionChild}
           </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>
