@@ -1,37 +1,50 @@
 import "server-only";
 
-import { prisma } from "@/db";
-import { PrismaAdapter } from "@lucia-auth/adapter-prisma";
-import { Lucia } from "lucia";
+import sgMail from "@sendgrid/mail";
+import { betterAuth } from "better-auth";
+import { prismaAdapter } from "better-auth/adapters/prisma";
+import { nextCookies } from "better-auth/next-js";
+import { ObjectId } from "mongodb";
 
+import { prisma } from "./db";
 import { USER_SESSION_COOKIE_NAME } from "./lib/constants";
 import { Roles } from "./lib/definitions";
 
-declare module "lucia" {
-  interface Register {
-    Lucia: typeof lucia;
-    DatabaseUserAttributes: {
-      email: string;
-      username: string;
-      role: Roles;
-    };
-  }
-}
+export const auth = betterAuth({
+  trustedOrigins: [process.env.DEV_MOBILE_URL!],
+  database: prismaAdapter(prisma, {
+    provider: "mongodb"
+  }),
+  emailAndPassword: {
+    enabled: true,
+    sendResetPassword: async ({ user, url }) => {
+      sgMail.setApiKey(process.env.SENDGRID_API_KEY!);
 
-const prismaAdapter = new PrismaAdapter(prisma.session, prisma.user);
+      const msg = {
+        to: user.email, // Change to your recipient
+        from: process.env.SENDGRID_FROM_EMAIL!, // Change to your verified sender
+        subject: "Recuperar contraseña",
+        text: `Recupera tu contraseña en ${url}`
+      };
 
-export const lucia = new Lucia(prismaAdapter, {
-  sessionCookie: {
-    name: USER_SESSION_COOKIE_NAME,
-    attributes: {
-      secure: process.env.NODE_ENV === "production"
+      await sgMail.send(msg);
     }
   },
-  getUserAttributes: (attributes) => {
-    return {
-      email: attributes.email,
-      username: attributes.username,
-      role: attributes.role
-    };
-  }
+  advanced: {
+    cookiePrefix: USER_SESSION_COOKIE_NAME,
+    generateId: () => {
+      return new ObjectId().toString();
+    }
+  },
+  user: {
+    additionalFields: {
+      role: {
+        type: "string",
+        required: true,
+        defaultValue: Roles.User,
+        input: false
+      }
+    }
+  },
+  plugins: [nextCookies()]
 });

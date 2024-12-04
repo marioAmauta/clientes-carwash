@@ -1,10 +1,13 @@
 import { Metadata } from "next";
+import Link from "next/link";
 
 import { verifyUserLoggedOut } from "@/data-access/auth-check";
 
 import { TEST_IDS, APP_LINKS } from "@/lib/constants";
+import { cn } from "@/lib/utils";
 
 import { MessageWithLink } from "@/components/message-with-link";
+import { buttonVariants } from "@/components/ui/button";
 import { TypographyH1 } from "@/components/ui/typography";
 
 import { FormLogin } from "./form-login";
@@ -22,12 +25,17 @@ export default async function LoginPage() {
     <>
       <TypographyH1>{title}</TypographyH1>
       <FormLogin />
-      <MessageWithLink
-        href={APP_LINKS.CREATE_ACCOUNT_PAGE}
-        linkTestId={TEST_IDS.createAccountLink}
-        linkLabel="Crear cuenta"
-        messageText="¿No tienes una cuenta?"
-      />
+      <div className="grid justify-center">
+        <Link href={APP_LINKS.FORGOT_PASSWORD_PAGE} className={cn(buttonVariants(), "font-semibold text-background")}>
+          Recuperar contraseña
+        </Link>
+        <MessageWithLink
+          href={APP_LINKS.CREATE_ACCOUNT_PAGE}
+          linkTestId={TEST_IDS.createAccountLink}
+          linkLabel="Crear cuenta"
+          messageText="¿No tienes una cuenta?"
+        />
+      </div>
     </>
   );
 }

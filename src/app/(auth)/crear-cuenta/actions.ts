@@ -1,23 +1,17 @@
 "use server";
 
-import { hash } from "bcrypt";
+import { auth } from "@/auth";
 import { redirect } from "next/navigation";
 
 import {
   getInvitationCodeForRegisterAction,
   updateInvitationCodeForRegisterAction
 } from "@/data-access/invitation-codes";
-import {
-  createUserForRegisterAction,
-  getEmailForRegisterAction,
-  getUsernameForRegisterAction,
-  getUsersQuantityForRegisterAction
-} from "@/data-access/user";
+import { getUsernameForRegisterAction, getUsersQuantityForRegisterAction } from "@/data-access/user";
 
 import { APP_LINKS, ERROR_MESSAGES } from "@/lib/constants";
 import { ActionReturnType } from "@/lib/definitions";
 import { registerSchema } from "@/lib/schemas";
-import { createSession } from "@/lib/session";
 
 export async function registerAction({ data }: { data: unknown }): Promise<ActionReturnType> {
   const parsedRegisterData = registerSchema.safeParse(data);
@@ -61,24 +55,17 @@ export async function registerAction({ data }: { data: unknown }): Promise<Actio
     };
   }
 
-  const foundEmail = await getEmailForRegisterAction({ email });
-
-  if (foundEmail) {
-    return {
-      success: false,
-      message: ERROR_MESSAGES.ALREADY_USED_EMAIL
-    };
-  }
-
-  const hashedPassword = await hash(password, 10);
-
-  const newUser = await createUserForRegisterAction({ username, email, password: hashedPassword });
+  await auth.api.signUpEmail({
+    body: {
+      email,
+      password,
+      name: username
+    }
+  });
 
   if (foundInvitationCode) {
     await updateInvitationCodeForRegisterAction({ code: foundInvitationCode.code, isUsed: true });
   }
-
-  await createSession({ userId: newUser.id });
 
   redirect(APP_LINKS.HOME_PAGE);
 }

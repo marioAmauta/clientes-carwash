@@ -20,6 +20,20 @@ export const newInvitationCodeSchema = z.object({
   invitationCode: invitationCodeSchema
 });
 
+export const forgotPasswordSchema = z.object({
+  email: emailSchema
+});
+
+export const resetPasswordSchema = z
+  .object({
+    password: passwordSchema,
+    confirmPassword: passwordSchema
+  })
+  .refine((data) => data.password === data.confirmPassword, {
+    path: [TEST_IDS.registerForm.confirmPassword],
+    message: ERROR_MESSAGES.CONFIRM_PASSWORD_FORM_ERROR
+  });
+
 export const loginSchema = z.object({
   email: emailSchema,
   password: passwordSchema

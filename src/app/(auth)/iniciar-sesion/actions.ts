@@ -1,14 +1,12 @@
 "use server";
 
-import { compare } from "bcrypt";
+import { auth } from "@/auth";
+import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
-
-import { getUserByEmailForLoginAction } from "@/data-access/user";
 
 import { APP_LINKS, ERROR_MESSAGES } from "@/lib/constants";
 import { ActionReturnType } from "@/lib/definitions";
 import { loginSchema } from "@/lib/schemas";
-import { createSession } from "@/lib/session";
 
 export async function loginAction({ data }: { data: unknown }): Promise<ActionReturnType> {
   const parsedLoginData = loginSchema.safeParse(data);
@@ -23,25 +21,20 @@ export async function loginAction({ data }: { data: unknown }): Promise<ActionRe
 
   const { email, password } = parsedLoginData.data;
 
-  const foundUser = await getUserByEmailForLoginAction({ email });
-
-  if (!foundUser) {
+  try {
+    await auth.api.signInEmail({
+      body: {
+        email,
+        password
+      }
+    });
+  } catch {
     return {
       success: false,
       message: ERROR_MESSAGES.INVALID_CREDENTIALS
     };
   }
 
-  const passwordMatch = await compare(password, foundUser.hashedPassword);
-
-  if (!passwordMatch) {
-    return {
-      success: false,
-      message: ERROR_MESSAGES.INVALID_CREDENTIALS
-    };
-  }
-
-  await createSession({ userId: foundUser.id });
-
+  revalidatePath(APP_LINKS.HOME_PAGE);
   redirect(APP_LINKS.HOME_PAGE);
 }

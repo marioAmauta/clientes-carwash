@@ -6,10 +6,9 @@ import { useRouter } from "next/navigation";
 import { useTransition } from "react";
 import { createPortal } from "react-dom";
 
+import { authClient } from "@/lib/auth-client";
 import { APP_LINKS, TEST_IDS } from "@/lib/constants";
 import { cn, eventPreventDefault } from "@/lib/utils";
-
-import { logoutAction } from "@/app/(auth)/actions";
 
 import { useButtonOptions } from "@/hooks/use-button-options";
 
@@ -26,18 +25,25 @@ import {
 
 import { ButtonLogout } from "./button-logout";
 
-export function ButtonOptionsUser({ username }: Pick<User, "username">) {
-  const { push } = useRouter();
+export function ButtonOptionsUser({ name }: Pick<User, "name">) {
+  const router = useRouter();
   const [isPending, startTransition] = useTransition();
   const { isOpen, setIsOpen } = useButtonOptions({ isPending });
 
   function navigateToProfile() {
-    push(`${APP_LINKS.USER_PAGE}/${username}`);
+    router.push(`${APP_LINKS.USER_PAGE}/${name}`);
   }
 
   function onLogout() {
     startTransition(async () => {
-      await logoutAction();
+      await authClient.signOut({
+        fetchOptions: {
+          onSuccess: () => {
+            router.push(APP_LINKS.LOGIN_PAGE);
+            router.refresh();
+          }
+        }
+      });
     });
   }
 
@@ -51,7 +57,7 @@ export function ButtonOptionsUser({ username }: Pick<User, "username">) {
           <CircleUserRound className="size-5" />
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
-          <DropdownMenuLabel>Hola {username}!</DropdownMenuLabel>
+          <DropdownMenuLabel>Hola {name}!</DropdownMenuLabel>
           <DropdownMenuSeparator />
           <DropdownMenuItem onSelect={navigateToProfile} data-testid={TEST_IDS.profileButton}>
             Ver perfil

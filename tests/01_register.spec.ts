@@ -16,7 +16,9 @@ test.beforeEach(async ({ page }) => {
   await page.goto(APP_LINKS.HOME_PAGE);
   await page.getByTestId(TEST_IDS.createAccountLink).click();
   await page.waitForURL(APP_LINKS.CREATE_ACCOUNT_PAGE);
-  expect((await page.context().cookies()).map((cookie) => cookie.name)).not.toContain(USER_SESSION_COOKIE_NAME);
+  expect((await page.context().cookies()).map((cookie) => cookie.name.split(".")[0])).not.toContain(
+    USER_SESSION_COOKIE_NAME
+  );
 });
 
 test("the first user do not need a valid invitation code to sign up successfully", async ({ page }) => {
@@ -28,7 +30,9 @@ test("the first user do not need a valid invitation code to sign up successfully
     }
   });
   await page.waitForURL(APP_LINKS.HOME_PAGE);
-  expect((await page.context().cookies()).map((cookie) => cookie.name)).toContain(USER_SESSION_COOKIE_NAME);
+  expect((await page.context().cookies()).map((cookie) => cookie.name.split(".")[0])).toContain(
+    USER_SESSION_COOKIE_NAME
+  );
 });
 
 test("the user can sign up with a valid invitation code and then be redirected to home page", async ({ page }) => {
@@ -40,7 +44,9 @@ test("the user can sign up with a valid invitation code and then be redirected t
     }
   });
   await page.waitForURL(APP_LINKS.HOME_PAGE);
-  expect((await page.context().cookies()).map((cookie) => cookie.name)).toContain(USER_SESSION_COOKIE_NAME);
+  expect((await page.context().cookies()).map((cookie) => cookie.name.split(".")[0])).toContain(
+    USER_SESSION_COOKIE_NAME
+  );
 });
 
 test("if user send already used username will get an error message and persist in register page", async ({ page }) => {
@@ -53,7 +59,9 @@ test("if user send already used username will get an error message and persist i
   });
   await page.waitForURL(APP_LINKS.CREATE_ACCOUNT_PAGE);
   await page.getByText(ERROR_MESSAGES.ALREADY_USED_USERNAME).isVisible();
-  expect((await page.context().cookies()).map((cookie) => cookie.name)).not.toContain(USER_SESSION_COOKIE_NAME);
+  expect((await page.context().cookies()).map((cookie) => cookie.name.split(".")[0])).not.toContain(
+    USER_SESSION_COOKIE_NAME
+  );
 });
 
 test("if user send already used email will get an error message and persist in register page", async ({ page }) => {
@@ -67,7 +75,9 @@ test("if user send already used email will get an error message and persist in r
   });
   await page.waitForURL(APP_LINKS.CREATE_ACCOUNT_PAGE);
   await page.getByText(ERROR_MESSAGES.ALREADY_USED_EMAIL).isVisible();
-  expect((await page.context().cookies()).map((cookie) => cookie.name)).not.toContain(USER_SESSION_COOKIE_NAME);
+  expect((await page.context().cookies()).map((cookie) => cookie.name.split(".")[0])).not.toContain(
+    USER_SESSION_COOKIE_NAME
+  );
 });
 
 test("if user send an invalid invitation code will get an error message and persist in register page", async ({
@@ -82,7 +92,9 @@ test("if user send an invalid invitation code will get an error message and pers
   });
   await page.waitForURL(APP_LINKS.CREATE_ACCOUNT_PAGE);
   await page.getByText(ERROR_MESSAGES.INVALID_INVITATION_CODE).isVisible();
-  expect((await page.context().cookies()).map((cookie) => cookie.name)).not.toContain(USER_SESSION_COOKIE_NAME);
+  expect((await page.context().cookies()).map((cookie) => cookie.name.split(".")[0])).not.toContain(
+    USER_SESSION_COOKIE_NAME
+  );
 });
 
 test("if user send an already used invitation code will get an error message  and persist in register page", async ({
@@ -98,5 +110,7 @@ test("if user send an already used invitation code will get an error message  an
   });
   await page.waitForURL(APP_LINKS.CREATE_ACCOUNT_PAGE);
   await page.getByText(ERROR_MESSAGES.ALREADY_USED_INVITATION_CODE).isVisible();
-  expect((await page.context().cookies()).map((cookie) => cookie.name)).not.toContain(USER_SESSION_COOKIE_NAME);
+  expect((await page.context().cookies()).map((cookie) => cookie.name.split(".")[0])).not.toContain(
+    USER_SESSION_COOKIE_NAME
+  );
 });

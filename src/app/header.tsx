@@ -1,9 +1,10 @@
 import { Plus, QrCode } from "lucide-react";
 import Link from "next/link";
 
+import { getServerSession } from "@/data-access/auth-check";
+
 import { TEST_IDS, APP_LINKS, SITE_TITLE } from "@/lib/constants";
 import { Roles } from "@/lib/definitions";
-import { validateRequest } from "@/lib/session";
 import { cn } from "@/lib/utils";
 
 import { buttonVariants } from "@/components/ui/button";
@@ -13,7 +14,7 @@ import { ButtonSearch } from "./button-search";
 import { HeaderHider } from "./header-hider";
 
 export async function Header() {
-  const { user } = await validateRequest();
+  const { user } = await getServerSession();
 
   return (
     <HeaderHider className="sticky top-0 z-50 w-full bg-primary backdrop-blur-md transition-all">
@@ -50,7 +51,7 @@ export async function Header() {
               >
                 <Plus className="size-5" />
               </Link>
-              <ButtonOptionsUser username={user.username} />
+              <ButtonOptionsUser name={user.name} />
             </>
           </nav>
         ) : null}

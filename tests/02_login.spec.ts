@@ -8,7 +8,9 @@ import { userLogoutAction, userLoginAction } from "./lib/utils";
 test.beforeEach(async ({ page }) => {
   await page.goto(APP_LINKS.HOME_PAGE);
   await page.waitForURL(APP_LINKS.LOGIN_PAGE);
-  expect((await page.context().cookies()).map((cookie) => cookie.name)).not.toContain(USER_SESSION_COOKIE_NAME);
+  expect((await page.context().cookies()).map((cookie) => cookie.name.split(".")[0])).not.toContain(
+    USER_SESSION_COOKIE_NAME
+  );
 });
 
 test("if user is not logged in cannot see homepage and is redirected to login page", async ({ page }) => {
@@ -21,11 +23,17 @@ test("user can login and logout and is redirected to login page after logout", a
     user: newUserMock
   });
   await page.waitForURL(APP_LINKS.HOME_PAGE);
-  expect((await page.context().cookies()).map((cookie) => cookie.name)).toContain(USER_SESSION_COOKIE_NAME);
+
+  expect((await page.context().cookies()).map((cookie) => cookie.name.split(".")[0])).toContain(
+    USER_SESSION_COOKIE_NAME
+  );
   await page.getByTestId(TEST_IDS.userMenuButtonTrigger).click();
   await userLogoutAction({ page });
   await page.waitForURL(APP_LINKS.LOGIN_PAGE);
-  expect((await page.context().cookies()).map((cookie) => cookie.name)).not.toContain(USER_SESSION_COOKIE_NAME);
+
+  expect((await page.context().cookies()).map((cookie) => cookie.name.split(".")[0])).not.toContain(
+    USER_SESSION_COOKIE_NAME
+  );
 });
 
 test("if user send a wrong email will get a credentials error message and persist in login page", async ({ page }) => {
