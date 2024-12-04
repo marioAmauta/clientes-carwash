@@ -16,10 +16,6 @@ import {
   UserSearchActionProps
 } from "./definitions";
 
-export async function userCloseToastAction({ page }: PlaywrightPage) {
-  await page.getByLabel("Close toast").click();
-}
-
 async function register({
   page,
   invitationCode,

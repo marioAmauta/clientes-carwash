@@ -27,7 +27,7 @@ export default function RootLayout({ children }: PropsWithChildren) {
         <Header />
         <main className="container mx-auto space-y-8 p-4 pb-12 lg:space-y-12 lg:py-8">{children}</main>
         <ButtonBackToTop />
-        <Toaster richColors closeButton position="top-center" />
+        <Toaster richColors position="top-center" />
       </body>
     </html>
   );

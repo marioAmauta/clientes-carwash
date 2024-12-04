@@ -5,7 +5,7 @@ import { APP_LINKS, SUCCESS_MESSAGES, TEST_IDS, USER_SESSION_COOKIE_NAME } from 
 import { resetInvitationCodes, seedInvitationCode, setUserToAdminByEmail } from "./lib/db";
 import { newUserMock } from "./lib/mock-data";
 import { adminUser, invitationCode1 } from "./lib/mock-data";
-import { userCloseToastAction, userCreateInvitationCodeAction, userLoginAction } from "./lib/utils";
+import { userCreateInvitationCodeAction, userLoginAction } from "./lib/utils";
 
 test.beforeEach(async ({ page }) => {
   await page.goto(APP_LINKS.LOGIN_PAGE);
@@ -46,7 +46,6 @@ test("admin can copy an invitation code successfully", async ({ page, context })
   await page.getByTestId(`${TEST_IDS.invitationCodeOptionsButton}${invitationCode1}`).click();
   await page.getByTestId(`${TEST_IDS.invitationCodeCopyButton}${invitationCode1}`).click();
   await page.getByText(SUCCESS_MESSAGES.INVITATION_CODE_COPIED).isVisible();
-  await userCloseToastAction({ page });
 });
 
 test("admin can delete an invitation code successfully", async ({ page }) => {
@@ -60,6 +59,5 @@ test("admin can delete an invitation code successfully", async ({ page }) => {
   await page.getByTestId(`${TEST_IDS.invitationCodeDeleteButtonTrigger}${invitationCode1}`).click();
   await page.getByTestId(`${TEST_IDS.invitationCodeDeleteButton}${invitationCode1}`).click();
   await page.getByText(SUCCESS_MESSAGES.INVITATION_CODE_DELETED).isVisible();
-  await userCloseToastAction({ page });
   await page.getByText(invitationCode1).isHidden();
 });

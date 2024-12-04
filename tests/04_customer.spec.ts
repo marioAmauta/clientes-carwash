@@ -17,13 +17,7 @@ import {
   newCustomerMock2,
   newUserMock2
 } from "./lib/mock-data";
-import {
-  userCloseToastAction,
-  userCreateNewCustomerAction,
-  userEditCustomerAction,
-  userLoginAction,
-  userRegisterAction
-} from "./lib/utils";
+import { userCreateNewCustomerAction, userEditCustomerAction, userLoginAction, userRegisterAction } from "./lib/utils";
 
 test("if there are no customers user can see a message with a create new customer button, user can create one customer by clicking the button and then be redirected to home page and see the new customer", async ({
   page
@@ -131,7 +125,6 @@ test("user cannot update a car plate to one that already exists and see an error
     }
   });
   await page.getByText(ERROR_MESSAGES.ALREADY_USED_CAR_PLATE).isVisible();
-  await userCloseToastAction({ page });
 });
 
 test("user can update customer data correctly", async ({ page }) => {
