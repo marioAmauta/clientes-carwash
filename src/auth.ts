@@ -11,7 +11,6 @@ import { USER_SESSION_COOKIE_NAME } from "./lib/constants";
 import { Roles } from "./lib/definitions";
 
 export const auth = betterAuth({
-  trustedOrigins: [process.env.DEV_MOBILE_URL!],
   database: prismaAdapter(prisma, {
     provider: "mongodb"
   }),
