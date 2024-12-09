@@ -4,7 +4,6 @@ import Link from "next/link";
 import { verifyUserLoggedOut } from "@/data-access/auth-check";
 
 import { TEST_IDS, APP_LINKS } from "@/lib/constants";
-import { cn } from "@/lib/utils";
 
 import { MessageWithLink } from "@/components/message-with-link";
 import { buttonVariants } from "@/components/ui/button";
@@ -26,7 +25,11 @@ export default async function LoginPage() {
       <TypographyH1>{title}</TypographyH1>
       <FormLogin />
       <div className="grid justify-center">
-        <Link href={APP_LINKS.FORGOT_PASSWORD_PAGE} className={cn(buttonVariants(), "font-semibold text-background")}>
+        <Link
+          href={APP_LINKS.FORGOT_PASSWORD_PAGE}
+          className={buttonVariants({ variant: "link" })}
+          data-testid={TEST_IDS.forgotPasswordPageLink}
+        >
           Recuperar contraseña
         </Link>
         <MessageWithLink

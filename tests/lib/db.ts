@@ -21,12 +21,14 @@ export async function resetDb() {
   await resetUsers();
   await resetInvitationCodes();
   await resetCustomers();
-  await prismaTest.session.deleteMany();
   await prismaTest.tip.deleteMany();
+  await prismaTest.verification.deleteMany();
 }
 
 export async function resetUsers() {
   await prismaTest.user.deleteMany();
+  await prismaTest.session.deleteMany();
+  await prismaTest.account.deleteMany();
 }
 
 export async function resetInvitationCodes() {

@@ -19,7 +19,7 @@ export default async function TipsCustomersUserProfileLayout({
 }: PropsWithChildren<{ params: Params<{ username: string }> }>) {
   const { username } = await params;
 
-  const { user } = await verifyUserLoggedIn({ name: username, checkIfIsTheSameUser: true });
+  const { user } = await verifyUserLoggedIn({ name: username, checkIsSameUser: true });
 
   const tipsCreatedByUserCount = await getTipsCreatedByUserCount({ createdById: user.id });
 

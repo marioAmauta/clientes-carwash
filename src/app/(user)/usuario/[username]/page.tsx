@@ -20,7 +20,7 @@ export default async function TipsByUserPage({
 }) {
   const { username } = await params;
 
-  const { user } = await verifyUserLoggedIn({ name: username, checkIfIsTheSameUser: true });
+  const { user } = await verifyUserLoggedIn({ name: username, checkIsSameUser: true });
 
   const { page, limit, sort, start, end } = await generatePaginationParams({ searchParams });
 

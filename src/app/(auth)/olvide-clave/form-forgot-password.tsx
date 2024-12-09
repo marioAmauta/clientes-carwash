@@ -50,7 +50,7 @@ export function FormForgotPassword({ setIsSubmitted }: { setIsSubmitted: (value:
                   <Input
                     type="email"
                     placeholder="Ingresa tu correo electrónico"
-                    data-testid={TEST_IDS.loginForm.email}
+                    data-testid={TEST_IDS.forgotPasswordForm.email}
                     {...field}
                   />
                 </FormControl>
@@ -60,7 +60,12 @@ export function FormForgotPassword({ setIsSubmitted }: { setIsSubmitted: (value:
           />
         </FormCard>
         <FormButtonContainer>
-          <FormButtonLoading type="submit" className="w-full" loading={isPending}>
+          <FormButtonLoading
+            type="submit"
+            className="w-full"
+            loading={isPending}
+            data-testid={TEST_IDS.forgotPasswordForm.submitButton}
+          >
             Enviar link de recuperación
           </FormButtonLoading>
         </FormButtonContainer>

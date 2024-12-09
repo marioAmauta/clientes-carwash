@@ -1,8 +1,8 @@
 import Link from "next/link";
 
-import { cn } from "@/lib/utils";
-
 import { buttonVariants } from "@/components/ui/button";
+
+import { TypographyP } from "./ui/typography";
 
 type MessageWithLinkProps = {
   messageText: string;
@@ -14,8 +14,8 @@ type MessageWithLinkProps = {
 export function MessageWithLink({ messageText, href, linkTestId, linkLabel }: MessageWithLinkProps) {
   return (
     <div className="space-y-4 py-4 text-center">
-      <p>{messageText}</p>
-      <Link href={href} data-testid={linkTestId} className={cn(buttonVariants(), "font-semibold text-background")}>
+      <TypographyP>{messageText}</TypographyP>
+      <Link href={href} data-testid={linkTestId} className={buttonVariants({ variant: "outline" })}>
         {linkLabel}
       </Link>
     </div>

@@ -1,6 +1,6 @@
 import { expect, test } from "@playwright/test";
 
-import { APP_LINKS, ERROR_MESSAGES, TEST_IDS, USER_SESSION_COOKIE_NAME } from "@/lib/constants";
+import { APP_LINKS, ERROR_MESSAGES, SUCCESS_MESSAGES, TEST_IDS, USER_SESSION_COOKIE_NAME } from "@/lib/constants";
 
 import { fakeCredentials, newUserMock } from "./lib/mock-data";
 import { userLogoutAction, userLoginAction } from "./lib/utils";
@@ -60,4 +60,16 @@ test("if user send a wrong password will get a credentials error message and per
   });
   await page.waitForURL(APP_LINKS.LOGIN_PAGE);
   await page.getByText(ERROR_MESSAGES.INVALID_CREDENTIALS).isVisible();
+});
+
+test("user can request password reset and navigate to forgot password form", async ({ page }) => {
+  await page.goto(APP_LINKS.HOME_PAGE);
+  await page.waitForURL(APP_LINKS.LOGIN_PAGE);
+  await page.getByTestId(TEST_IDS.forgotPasswordPageLink).click();
+  await page.waitForURL(APP_LINKS.FORGOT_PASSWORD_PAGE);
+  await page.getByTestId(TEST_IDS.forgotPasswordForm.email).fill(newUserMock.email);
+  await page.getByTestId(TEST_IDS.forgotPasswordForm.submitButton).click();
+  await page.getByText(SUCCESS_MESSAGES.RESET_PASSWORD_EMAIL_SENT).isVisible();
+  await page.getByTestId(TEST_IDS.backToForgotPasswordButton).click();
+  await page.getByTestId(TEST_IDS.forgotPasswordForm.email).isVisible();
 });

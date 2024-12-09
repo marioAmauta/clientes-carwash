@@ -45,10 +45,17 @@ export const ERROR_MESSAGES = Object.freeze({
 
 export const SUCCESS_MESSAGES = Object.freeze({
   INVITATION_CODE_COPIED: "Código de invitación copiado con éxito",
-  INVITATION_CODE_DELETED: "Código de invitación eliminado con éxito"
+  INVITATION_CODE_DELETED: "Código de invitación eliminado con éxito",
+  RESET_PASSWORD_EMAIL_SENT: "Hemos enviado un enlace para restablecer tu contraseña a tu correo electrónico."
 });
 
 export const TEST_IDS = Object.freeze({
+  backToForgotPasswordButton: "backToForgotPasswordButton",
+  forgotPasswordForm: {
+    email: "forgotPasswordForm:email",
+    submitButton: "forgotPasswordForm:submitButton"
+  },
+  forgotPasswordPageLink: "forgotPasswordPageLink",
   profileButton: "profileButton",
   editProfileButton: "editProfileButton",
   registerForm: {
