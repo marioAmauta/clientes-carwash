@@ -1,14 +1,14 @@
 "use client";
 
-import { ArrowLeft, CheckCircle2 } from "lucide-react";
+import { CheckCircle2 } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
 
 import { APP_LINKS, SUCCESS_MESSAGES, TEST_IDS } from "@/lib/constants";
 
-import { Alert, AlertDescription } from "@/components/ui/alert";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Button, buttonVariants } from "@/components/ui/button";
-import { TypographyH1, TypographyP } from "@/components/ui/typography";
+import { TypographyH1 } from "@/components/ui/typography";
 
 import { FormForgotPassword } from "./form-forgot-password";
 
@@ -19,20 +19,20 @@ export default function ForgotPasswordPage() {
     return (
       <>
         <TypographyH1>Revisa tu email</TypographyH1>
-        <TypographyP className="text-center">{SUCCESS_MESSAGES.RESET_PASSWORD_EMAIL_SENT}</TypographyP>
-        <Alert>
-          <CheckCircle2 className="size-5" />
-          <AlertDescription>Si no ves el correo electrónico, revisa tu carpeta de spam.</AlertDescription>
-        </Alert>
-        <div className="grid justify-center">
+        <section className="flex flex-col items-center space-y-8 lg:space-y-12">
+          <Alert className="w-fit">
+            <CheckCircle2 className="size-5" />
+            <AlertTitle>{SUCCESS_MESSAGES.RESET_PASSWORD_EMAIL_SENT}</AlertTitle>
+            <AlertDescription>Si no ves el correo electrónico, revisa tu carpeta de spam.</AlertDescription>
+          </Alert>
           <Button
-            variant="outline"
+            variant="link"
             onClick={() => setIsSubmitted(false)}
             data-testid={TEST_IDS.backToForgotPasswordButton}
           >
-            <ArrowLeft className="mr-2 h-4 w-4" /> Volver a recuperar contraseña
+            Volver a recuperar contraseña
           </Button>
-        </div>
+        </section>
       </>
     );
   }
@@ -43,7 +43,7 @@ export default function ForgotPasswordPage() {
       <FormForgotPassword setIsSubmitted={setIsSubmitted} />
       <div className="flex justify-center">
         <Link href={APP_LINKS.LOGIN_PAGE} className={buttonVariants({ variant: "link" })}>
-          Volver inicio de sesión
+          Volver a inicio de sesión
         </Link>
       </div>
     </>

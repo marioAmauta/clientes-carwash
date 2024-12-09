@@ -1,15 +1,15 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useRouter } from "next/navigation";
 import { useTransition } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 
-import { TEST_IDS } from "@/lib/constants";
+import { authClient } from "@/lib/auth-client";
+import { APP_LINKS, TEST_IDS } from "@/lib/constants";
 import { ResetPasswordSchemaType } from "@/lib/definitions";
 import { resetPasswordSchema } from "@/lib/schemas";
-
-import { resetPasswordAction } from "@/app/(auth)/actions";
 
 import { FormButtonContainer } from "@/components/form-button-container";
 import { FormButtonLoading } from "@/components/form-button-loading";
@@ -18,6 +18,7 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { InputPassword } from "@/components/ui/input";
 
 export function FormResetPassword() {
+  const router = useRouter();
   const [isPending, startTransition] = useTransition();
 
   const form = useForm<ResetPasswordSchemaType>({
@@ -30,11 +31,16 @@ export function FormResetPassword() {
 
   async function onSubmit({ password }: ResetPasswordSchemaType) {
     startTransition(async () => {
-      try {
-        await resetPasswordAction(password);
-      } catch {
-        toast.error("Error al actualizar la contraseña");
+      const { error } = await authClient.resetPassword({
+        newPassword: password
+      });
+
+      if (error) {
+        toast.error("Error al restablecer la contraseña");
+        return;
       }
+
+      router.push(APP_LINKS.LOGIN_PAGE);
     });
   }
 

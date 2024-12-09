@@ -15,7 +15,11 @@ import { FormCard } from "@/components/form-card";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 
-export function FormForgotPassword({ setIsSubmitted }: { setIsSubmitted: (value: boolean) => void }) {
+type FormForgotPasswordProps = {
+  setIsSubmitted: (value: boolean) => void;
+};
+
+export function FormForgotPassword({ setIsSubmitted }: FormForgotPasswordProps) {
   const [isPending, startTransition] = useTransition();
 
   const form = useForm<ForgotPasswordSchemaType>({

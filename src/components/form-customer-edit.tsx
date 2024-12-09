@@ -66,7 +66,7 @@ export function FormCustomerEdit({ customer, editCustomer, setEditCustomer, with
         </DialogHeader>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)}>
-            <FormCard>
+            <FormCard className="max-w-full">
               <FormField
                 control={form.control}
                 name="carPlate"

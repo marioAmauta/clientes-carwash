@@ -62,7 +62,7 @@ export function FormTip({ editTip, tip, customerId, closeDialog }: FormTipProps)
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)}>
-        <FormCard>
+        <FormCard className="max-w-full">
           <FormField
             control={form.control}
             name="tipComment"

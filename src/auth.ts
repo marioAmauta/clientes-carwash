@@ -20,10 +20,10 @@ export const auth = betterAuth({
       sgMail.setApiKey(process.env.SENDGRID_API_KEY!);
 
       const msg = {
-        to: user.email, // Change to your recipient
-        from: process.env.SENDGRID_FROM_EMAIL!, // Change to your verified sender
+        to: user.email,
+        from: process.env.SENDGRID_FROM_EMAIL!,
         subject: "Recuperar contraseña",
-        text: `Recupera tu contraseña en ${url}`
+        text: `Recupera tu contraseña en: ${url}`
       };
 
       await sgMail.send(msg);
