@@ -9,7 +9,7 @@ export const metadata: Metadata = {
 };
 
 export default async function CreateInvitationCodePage() {
-  await verifyUserLoggedIn({ checkIfIsAdmin: true });
+  await verifyUserLoggedIn({ checkIsAdmin: true });
 
   return <FormInvitationCode />;
 }

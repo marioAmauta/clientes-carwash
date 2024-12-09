@@ -12,7 +12,7 @@ import { ActionReturnType } from "@/lib/definitions";
 import { invitationCodeSchema } from "@/lib/schemas";
 
 export async function createInvitationCodeAction({ code }: { code: string }): Promise<ActionReturnType> {
-  await verifyUserLoggedIn({ checkIfIsAdmin: true });
+  await verifyUserLoggedIn({ checkIsAdmin: true });
 
   const invitationParsedData = invitationCodeSchema.safeParse(code);
 

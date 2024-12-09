@@ -16,7 +16,7 @@ export const metadata: Metadata = {
 };
 
 export default async function InvitationCodesPage() {
-  await verifyUserLoggedIn({ checkIfIsAdmin: true });
+  await verifyUserLoggedIn({ checkIsAdmin: true });
 
   const invitationCodes = await getInvitationCodes();
 

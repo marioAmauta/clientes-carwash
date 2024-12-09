@@ -20,20 +20,20 @@ export const getServerSession = cache(async () => {
 });
 
 type VerifyUserLoggedInOptions = {
-  checkIfIsAdmin?: boolean;
-  checkIfIsTheSameUser?: boolean;
+  checkIsAdmin?: boolean;
+  checkIsSameUser?: boolean;
   name?: string;
 };
 
 export const verifyUserLoggedIn = cache(
-  async ({ checkIfIsAdmin, checkIfIsTheSameUser, name }: VerifyUserLoggedInOptions = {}) => {
+  async ({ checkIsAdmin, checkIsSameUser, name }: VerifyUserLoggedInOptions = {}) => {
     const { user, session } = await getServerSession();
 
     if (!user || !session) {
       return redirect(APP_LINKS.LOGIN_PAGE);
     }
 
-    if ((checkIfIsAdmin && user.role !== Roles.Admin) || (checkIfIsTheSameUser && user.name !== name)) {
+    if ((checkIsAdmin && user.role !== Roles.Admin) || (checkIsSameUser && user.name !== name)) {
       return redirect(APP_LINKS.HOME_PAGE);
     }
 

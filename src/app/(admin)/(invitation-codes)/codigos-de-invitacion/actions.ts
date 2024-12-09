@@ -8,7 +8,7 @@ import { deleteInvitationCode } from "@/data-access/invitation-codes";
 import { APP_LINKS } from "@/lib/constants";
 
 export async function deleteInvitationCodeAction({ code }: { code: string }) {
-  await verifyUserLoggedIn({ checkIfIsAdmin: true });
+  await verifyUserLoggedIn({ checkIsAdmin: true });
 
   await deleteInvitationCode({ code });
 

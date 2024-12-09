@@ -19,7 +19,7 @@ const tabs: TabsMenuLinkType[] = [
 ];
 
 export default async function InvitationCodesLayout({ children }: PropsWithChildren) {
-  await verifyUserLoggedIn({ checkIfIsAdmin: true });
+  await verifyUserLoggedIn({ checkIsAdmin: true });
 
   return (
     <>

@@ -21,7 +21,7 @@ export async function updateInvitationCodeForRegisterAction({ code, isUsed }: Pi
 }
 
 export const getInvitationCodes = cache(async () => {
-  await verifyUserLoggedIn({ checkIfIsAdmin: true });
+  await verifyUserLoggedIn({ checkIsAdmin: true });
 
   return await prisma.invitationCode.findMany({
     orderBy: { createdAt: "desc" }
@@ -29,7 +29,7 @@ export const getInvitationCodes = cache(async () => {
 });
 
 export async function createInvitationCode({ code }: Pick<InvitationCode, "code">) {
-  await verifyUserLoggedIn({ checkIfIsAdmin: true });
+  await verifyUserLoggedIn({ checkIsAdmin: true });
 
   return await prisma.invitationCode.create({
     data: { code }
@@ -37,7 +37,7 @@ export async function createInvitationCode({ code }: Pick<InvitationCode, "code"
 }
 
 export async function deleteInvitationCode({ code }: Pick<InvitationCode, "code">) {
-  await verifyUserLoggedIn({ checkIfIsAdmin: true });
+  await verifyUserLoggedIn({ checkIsAdmin: true });
 
   return await prisma.invitationCode.delete({
     where: { code }
