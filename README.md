@@ -2,13 +2,13 @@
 
 ## Principales tecnologías usadas en este proyecto
 
-- Lenguaje: <a href="https://www.typescriptlang.org/" target="_blank" rel="noopener noreferrer">TypeScript</a>
-- Framework: <a href="https://nextjs.org/" target="_blank" rel="noopener noreferrer">Next.js</a>
-- Auth: <a href="https://www.better-auth.com/" target="_blank" rel="noopener noreferrer">Better-Auth</a>
-- Estilos: <a href="https://tailwindcss.com/" target="_blank" rel="noopener noreferrer">Tailwindcss</a>
-- Base de datos: <a href="https://mongodb.com/" target="_blank" rel="noopener noreferrer">MongoDB</a>
-- ORM: <a href="https://www.prisma.io/" target="_blank" rel="noopener noreferrer">Prisma</a>
-- Tests E2E: <a href="https://playwright.dev/" target="_blank" rel="noopener noreferrer">Playwright</a>
+- Lenguaje: [TypeScript](https://www.typescriptlang.org/)
+- Framework: [Next.js](https://nextjs.org/)
+- Auth: [Better-Auth](https://www.better-auth.com/)
+- Estilos: [Tailwind CSS](https://tailwindcss.com/)
+- Base de datos: [MongoDB](https://mongodb.com/)
+- ORM: [Prisma](https://www.prisma.io/)
+- Tests E2E: [Playwright](https://playwright.dev/)
 
 ## ¿El por qué?
 
@@ -31,14 +31,14 @@ En el caso del usuario administrador.
 
 ## Links del demo de la app
 
-- <a href="https://clientes-carwash.vercel.app/iniciar-sesion?email=hello@hello.com&password=hello123" target="_blank" rel="noopener noreferrer">Demo Usuario Normal</a>
-- <a href="https://clientes-carwash.vercel.app/iniciar-sesion?email=marioamauta@hello.com&password=hello123" target="_blank" rel="noopener noreferrer">Demo Usuario Administrador</a>
+- [Demo Usuario Normal](https://clientes-carwash.vercel.app/iniciar-sesion?email=hello@hello.com&password=hello123)
+- [Demo Usuario Administrador](https://clientes-carwash.vercel.app/iniciar-sesion?email=marioamauta@hello.com&password=hello123)
 
 ## Configuración para usar en tu maquina
 
-- Configurar MongoDB ya sea en local o con <a href="https://mongodb.com/atlas" target="_blank" rel="noopener noreferrer">MongoDB Atlas gratis</a>
-- Configurar la variable de entorno `DATABASE_URL` con la cadena de texto de conexión de MongoDB
-- Configurar la variable de entorno `SITE_TITLE` para darle el nombre que desees al proyecto, por defecto el nombre de la app es "Clientes Carwash"
+- Configurar MongoDB ya sea en local o con [MongoDB Atlas gratis](https://mongodb.com/atlas).
+- Configurar la variable de entorno `DATABASE_URL` con la cadena de texto de conexión de MongoDB.
+- Configurar la variable de entorno `SITE_TITLE` para darle el nombre que desees al proyecto, por defecto el nombre de la app es "Clientes Carwash".
 
 ### Ejecutar Next.js en modo de desarrollo
 
