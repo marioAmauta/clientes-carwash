@@ -215,6 +215,22 @@ export async function editCustomer({
   });
 }
 
+export async function updateCustomerDescription({
+  id,
+  customerDescription
+}: Pick<Customer, "id" | "customerDescription">) {
+  await verifyUserLoggedIn();
+
+  return await prisma.customer.update({
+    where: {
+      id
+    },
+    data: {
+      customerDescription
+    }
+  });
+}
+
 export async function deleteCustomer({ carPlate }: Pick<Customer, "carPlate">) {
   await verifyUserLoggedIn();
 

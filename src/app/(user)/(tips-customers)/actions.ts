@@ -3,7 +3,7 @@
 import { Customer } from "@prisma/client";
 
 import { verifyUserLoggedIn } from "@/data-access/auth-check";
-import { editCustomer, getCustomerIdByCarPlate } from "@/data-access/customer";
+import { editCustomer, getCustomerIdByCarPlate, updateCustomerDescription } from "@/data-access/customer";
 
 import { ERROR_MESSAGES } from "@/lib/constants";
 import { ActionReturnType } from "@/lib/definitions";
@@ -11,8 +11,9 @@ import { customerSchema } from "@/lib/schemas";
 
 export async function editCustomerAction({
   id,
-  data
-}: Pick<Customer, "id"> & { data: unknown }): Promise<ActionReturnType> {
+  data,
+  tempCarPlate
+}: Pick<Customer, "id"> & { data: unknown; tempCarPlate: string }): Promise<ActionReturnType> {
   await verifyUserLoggedIn();
 
   const customerParsedData = customerSchema.safeParse(data);
@@ -26,6 +27,17 @@ export async function editCustomerAction({
   }
 
   const { carPlate, customerDescription } = customerParsedData.data;
+
+  if (carPlate === tempCarPlate && customerDescription) {
+    await updateCustomerDescription({
+      id,
+      customerDescription
+    });
+
+    return {
+      success: true
+    };
+  }
 
   const foundCustomer = await getCustomerIdByCarPlate({ carPlate });
 

@@ -41,7 +41,7 @@ export function FormCustomerEdit({ customer, editCustomer, setEditCustomer, with
 
   async function onSubmit(data: CustomerSchemaType) {
     startTransition(async () => {
-      const response = await editCustomerAction({ id: customer.id, data });
+      const response = await editCustomerAction({ id: customer.id, data, tempCarPlate: customer.carPlate });
 
       if (response && !response.success) {
         toast.error(response.message);
