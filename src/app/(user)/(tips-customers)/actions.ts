@@ -29,13 +29,14 @@ export async function editCustomerAction({
   const { carPlate, customerDescription } = customerParsedData.data;
 
   if (carPlate === tempCarPlate && customerDescription) {
-    await updateCustomerDescription({
+    const editResult = await updateCustomerDescription({
       id,
       customerDescription
     });
 
     return {
-      success: true
+      success: true,
+      message: editResult.carPlate
     };
   }
 
